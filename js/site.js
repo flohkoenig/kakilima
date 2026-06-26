@@ -6,7 +6,6 @@ const NAV = [
   { href: "index.html",     label: "Startseite" },
   { href: "rezepte.html",   label: "Rezepte" },
   { href: "leitfaden.html", label: "Rezept anlegen" },
-  { href: "impressum.html", label: "Impressum" },
 ];
 
 function brandMark() {
@@ -44,19 +43,11 @@ function buildFooter() {
   return `
   <footer class="site-footer">
     <div class="wrap">
-      <div>
-        <span class="brand-name">Kaki&nbsp;Lima<small>Indonesische Küche &amp; mehr…</small></span>
-        <p>Eine kleine Sammlung indonesischer Rezepte zum Nachkochen. Selamat makan!</p>
-      </div>
+      <span>© <span id="year"></span> Kaki Lima</span>
       <nav class="footer-links" aria-label="Footer">
-        <a href="index.html">Startseite</a>
         <a href="rezepte.html">Rezepte</a>
-        <a href="leitfaden.html">Rezept anlegen</a>
         <a href="impressum.html">Impressum</a>
       </nav>
-    </div>
-    <div class="footer-bottom">
-      <div class="wrap">© <span id="year"></span> Kaki Lima · All Rights Reserved</div>
     </div>
   </footer>`;
 }

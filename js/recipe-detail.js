@@ -64,9 +64,10 @@
     setMeta("description", d.description || "");
 
     const img = recipeImage(d);
-    const photo = img
-      ? `<img class="recipe-photo" src="${escapeHtml(img)}" alt="${escapeHtml(d.title)}" onerror="this.classList.add('ph');this.removeAttribute('src');this.innerHTML='${ICONS.utensils.replace(/'/g, "&#39;")}'">`
-      : `<div class="recipe-photo ph">${ICONS.utensils}</div>`;
+    const photo = `<div class="recipe-photo">
+        <div class="ph">${ICONS.utensils}</div>
+        ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(d.title)}" onerror="this.remove()">` : ""}
+      </div>`;
 
     const tags = Array.isArray(d.tags) && d.tags.length
       ? `<div class="recipe-tags">${d.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>` : "";
@@ -81,7 +82,7 @@
       <nav class="crumbs"><a href="index.html">Startseite</a> › <a href="rezepte.html">Rezepte</a> › ${escapeHtml(d.title)}</nav>
 
       <header class="recipe-head">
-        <span class="eyebrow">${escapeHtml(d.category || d.cuisine || "Rezept")}</span>
+        <span class="kicker">${escapeHtml(d.category || d.cuisine || "Rezept")}</span>
         <h1>${escapeHtml(d.title)}</h1>
         ${d.description ? `<p class="lead">${escapeHtml(d.description)}</p>` : ""}
         ${tags}

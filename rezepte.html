@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rezepte · Kaki Lima</title>
-  <meta name="description" content="Alle indonesischen Rezepte auf Kaki Lima – suchen, filtern und nachkochen.">
+  <meta name="description" content="Alle indonesischen Rezepte – suchen, filtern, als Kacheln oder Liste.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%2357340d'/%3E%3Cpath d='M8 23h24c0 6.6-5.4 11-12 11S8 29.6 8 23z' fill='%23ffc65a'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="css/styles.css">
@@ -15,9 +15,7 @@
   <main>
     <div class="wrap">
       <header class="page-head">
-        <span class="eyebrow">Die Sammlung</span>
         <h1>Rezepte</h1>
-        <p class="lead muted">Such dir aus, worauf du Lust hast.</p>
       </header>
 
       <div class="toolbar">
@@ -25,12 +23,13 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input type="search" id="recipeSearch" placeholder="Rezept oder Zutat suchen…" aria-label="Rezepte durchsuchen">
         </label>
+        <div class="view-toggle" id="viewToggle" role="group" aria-label="Ansicht wechseln"></div>
       </div>
       <div class="chips" id="catChips" role="group" aria-label="Nach Kategorie filtern"></div>
       <p class="result-count" id="resultCount"></p>
-      <div class="grid" id="recipeGrid"></div>
+      <div id="recipeContainer" class="grid"></div>
     </div>
-    <div style="height:2.5rem"></div>
+    <div style="height:2rem"></div>
   </main>
 
   <div id="site-footer-slot"></div>
