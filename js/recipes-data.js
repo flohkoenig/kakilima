@@ -67,8 +67,17 @@ const ICONS = {
   gauge: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13l4-3"/><path d="M4 18a8 8 0 1 1 16 0"/><circle cx="12" cy="13" r="1"/></svg>`,
   search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`,
   utensils: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M7 13v8"/><path d="M17 3c-1.7 0-3 1.8-3 4s1.3 4 3 4v10"/></svg>`,
+  grid:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>`,
+  list:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>`,
 };
-function placeholderThumb() { return `<div class="ph">${ICONS.utensils}</div>`; }
+/* placeholder sits behind the image; on load error the <img> just removes
+   itself (no HTML inside the onerror attribute → no escaping pitfalls). */
+function thumbMedia(img, alt) {
+  const ph = `<div class="ph">${ICONS.utensils}</div>`;
+  return img
+    ? `${ph}<img src="${escapeHtml(img)}" alt="${escapeHtml(alt)}" loading="lazy" onerror="this.remove()">`
+    : ph;
+}
 
 function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c =>
@@ -77,22 +86,41 @@ function escapeHtml(s) {
 
 /* ---- recipe card ---- */
 function recipeCard(r) {
-  const img = recipeImage(r);
-  const media = img
-    ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(r.title)}" loading="lazy" onerror="this.outerHTML='${placeholderThumb().replace(/'/g, "&#39;")}'">`
-    : placeholderThumb();
   const cat = r.category ? `<span class="cat">${escapeHtml(r.category)}</span>` : "";
   const tt = totalTime(r);
 
   return `
   <article class="recipe-card">
     <a href="rezept.html?slug=${encodeURIComponent(r.slug)}">
-      <div class="thumb">${media}${cat}</div>
+      <div class="thumb">${thumbMedia(recipeImage(r), r.title)}${cat}</div>
       <div class="body">
         <h3>${escapeHtml(r.title)}</h3>
         <p>${escapeHtml(r.description || "")}</p>
         <div class="meta">
           ${tt ? `<span>${ICONS.clock}${fmtMinutes(tt)}</span>` : ""}
+          ${r.difficulty ? `<span>${ICONS.gauge}${escapeHtml(r.difficulty)}</span>` : ""}
+        </div>
+      </div>
+    </a>
+  </article>`;
+}
+
+/* ---- recipe row (list view) ---- */
+function recipeRow(r) {
+  const tt = totalTime(r);
+  return `
+  <article class="recipe-row">
+    <a href="rezept.html?slug=${encodeURIComponent(r.slug)}">
+      <div class="thumb">${thumbMedia(recipeImage(r), r.title)}</div>
+      <div class="body">
+        <div class="top">
+          <h3>${escapeHtml(r.title)}</h3>
+          ${r.category ? `<span class="cat">${escapeHtml(r.category)}</span>` : ""}
+        </div>
+        <p>${escapeHtml(r.description || "")}</p>
+        <div class="meta">
+          ${tt ? `<span>${ICONS.clock}${fmtMinutes(tt)}</span>` : ""}
+          ${r.servings ? `<span>${ICONS.users}${escapeHtml(String(r.servings))} Port.</span>` : ""}
           ${r.difficulty ? `<span>${ICONS.gauge}${escapeHtml(r.difficulty)}</span>` : ""}
         </div>
       </div>
