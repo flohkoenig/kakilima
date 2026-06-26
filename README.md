@@ -25,18 +25,6 @@ Eine Datei `recipes/dein-rezept.md` anlegen, committen und pushen. Die genaue
 Struktur (Front Matter, Abschnitte, Bild) steht im Leitfaden auf der Website
 (`leitfaden.html`).
 
-## Lokal
-
-```bash
-node scripts/build-index.mjs   # Index neu bauen
-python3 -m http.server 8000    # → http://localhost:8000
-```
-
-## Deployment (GitHub Pages)
-
-In **Settings → Pages** als Quelle **„GitHub Actions"** wählen. Beim Push auf
-`main` baut die Action den Index und veröffentlicht die Seite.
-
 ## Lizenz
 
 [MIT](LICENSE)
