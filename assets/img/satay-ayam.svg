@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Satay Ayam">
+  <defs><radialGradient id="t" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#f4e7c9"/><stop offset="100%" stop-color="#e0c594"/></radialGradient></defs>
+  <rect width="600" height="400" fill="url(#t)"/>
+  <ellipse cx="300" cy="320" rx="180" ry="34" fill="#fffaf0"/>
+  <ellipse cx="300" cy="320" rx="180" ry="34" fill="none" stroke="#e7d8bd" stroke-width="5"/>
+  <g stroke="#b98a52" stroke-width="6" stroke-linecap="round">
+    <line x1="150" y1="300" x2="430" y2="120"/><line x1="190" y1="320" x2="470" y2="140"/><line x1="230" y1="335" x2="510" y2="155"/>
+  </g>
+  <g fill="#c98a3f" stroke="#9c5f25" stroke-width="3">
+    <rect x="300" y="170" width="46" height="34" rx="9" transform="rotate(-33 323 187)"/>
+    <rect x="345" y="145" width="46" height="34" rx="9" transform="rotate(-33 368 162)"/>
+    <rect x="255" y="195" width="46" height="34" rx="9" transform="rotate(-33 278 212)"/>
+    <rect x="340" y="190" width="46" height="34" rx="9" transform="rotate(-33 363 207)"/>
+    <rect x="385" y="165" width="46" height="34" rx="9" transform="rotate(-33 408 182)"/>
+    <rect x="295" y="215" width="46" height="34" rx="9" transform="rotate(-33 318 232)"/>
+  </g>
+  <ellipse cx="190" cy="300" rx="40" ry="22" fill="#caa15a"/>
+  <ellipse cx="190" cy="296" rx="40" ry="22" fill="#d9b56e"/>
+</svg>

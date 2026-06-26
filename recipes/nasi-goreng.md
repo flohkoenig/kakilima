@@ -3,12 +3,13 @@ title: Nasi Goreng
 description: Indonesiens berühmtester gebratener Reis – würzig, rauchig und in 20 Minuten fertig auf dem Teller.
 category: Hauptgericht
 cuisine: Indonesisch
+image: assets/img/nasi-goreng.svg
 prep_time: 15
 cook_time: 10
 servings: 2
 difficulty: Einfach
 tags: [reis, schnell, streetfood, klassiker]
-author: Tina
+author: Florian Ball
 date: 2026-06-20
 featured: true
 ---

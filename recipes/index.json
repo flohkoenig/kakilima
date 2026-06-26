@@ -5,7 +5,7 @@
     "description": "Indonesiens berühmtester gebratener Reis – würzig, rauchig und in 20 Minuten fertig auf dem Teller.",
     "category": "Hauptgericht",
     "cuisine": "Indonesisch",
-    "image": "",
+    "image": "assets/img/nasi-goreng.svg",
     "prep_time": 15,
     "cook_time": 10,
     "total_time": 25,
@@ -17,7 +17,7 @@
       "streetfood",
       "klassiker"
     ],
-    "author": "Tina",
+    "author": "Florian Ball",
     "date": "2026-06-20",
     "featured": true
   },
@@ -27,7 +27,7 @@
     "description": "Marinierte Hähnchenspieße vom Grill mit cremiger Erdnusssauce – der König des indonesischen Streetfoods.",
     "category": "Streetfood",
     "cuisine": "Indonesisch",
-    "image": "",
+    "image": "assets/img/satay-ayam.svg",
     "prep_time": 30,
     "cook_time": 15,
     "total_time": 45,
@@ -39,7 +39,7 @@
       "spieße",
       "erdnuss"
     ],
-    "author": "Tina",
+    "author": "Florian Ball",
     "date": "2026-06-18",
     "featured": true
   },
@@ -49,7 +49,7 @@
     "description": "Indonesiens bunter Gemüsesalat mit warmer Erdnusssauce – knackig, sättigend und komplett vegetarisch.",
     "category": "Vegetarisch",
     "cuisine": "Indonesisch",
-    "image": "",
+    "image": "assets/img/gado-gado.svg",
     "prep_time": 25,
     "cook_time": 15,
     "total_time": 40,
@@ -61,7 +61,7 @@
       "erdnuss",
       "gesund"
     ],
-    "author": "Tina",
+    "author": "Florian Ball",
     "date": "2026-06-15",
     "featured": true
   },
@@ -71,7 +71,7 @@
     "description": "Balis frische Rohkost-Sambal aus Zitronengras, Schalotten und Limette – feurig, zitrisch und in 10 Minuten gemacht.",
     "category": "Sambal & Beilagen",
     "cuisine": "Bali",
-    "image": "",
+    "image": "assets/img/sambal-matah.svg",
     "prep_time": 10,
     "cook_time": 0,
     "total_time": 10,
@@ -84,7 +84,7 @@
       "roh",
       "schnell"
     ],
-    "author": "Tina",
+    "author": "Florian Ball",
     "date": "2026-06-12",
     "featured": false
   },
@@ -94,7 +94,7 @@
     "description": "Das langsam geschmorte Rindfleisch aus Sumatra in Kokos und Gewürzen – einmal zum „besten Gericht der Welt\" gewählt.",
     "category": "Hauptgericht",
     "cuisine": "Sumatra",
-    "image": "",
+    "image": "assets/img/rendang.svg",
     "prep_time": 30,
     "cook_time": 180,
     "total_time": 210,
@@ -106,7 +106,7 @@
       "kokos",
       "festessen"
     ],
-    "author": "Tina",
+    "author": "Florian Ball",
     "date": "2026-06-10",
     "featured": false
   }

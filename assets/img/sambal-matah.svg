@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Sambal Matah">
+  <defs><radialGradient id="t" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#f4e7c9"/><stop offset="100%" stop-color="#e0c594"/></radialGradient></defs>
+  <rect width="600" height="400" fill="url(#t)"/>
+  <circle cx="300" cy="200" r="152" fill="#fffaf0"/>
+  <circle cx="300" cy="200" r="152" fill="none" stroke="#e7d8bd" stroke-width="6"/>
+  <circle cx="300" cy="205" r="110" fill="#efe7d4"/>
+  <ellipse cx="300" cy="195" rx="110" ry="96" fill="#f5efe0"/>
+  <g fill="#c0392b"><rect x="250" y="175" width="40" height="9" rx="4" transform="rotate(25 270 180)"/><rect x="300" y="160" width="44" height="9" rx="4" transform="rotate(-20 322 165)"/><rect x="270" y="220" width="40" height="9" rx="4" transform="rotate(-35 290 225)"/><rect x="320" y="210" width="40" height="9" rx="4" transform="rotate(40 340 215)"/></g>
+  <g fill="#7d4a2a"><ellipse cx="240" cy="200" rx="11" ry="7"/><ellipse cx="330" cy="190" rx="11" ry="7"/><ellipse cx="290" cy="245" rx="11" ry="7"/><ellipse cx="350" cy="230" rx="10" ry="6"/></g>
+  <g fill="#3f9b54"><circle cx="280" cy="185" r="5"/><circle cx="315" cy="225" r="5"/><circle cx="255" cy="230" r="4"/><circle cx="335" cy="170" r="4"/></g>
+  <g fill="#f1c40f" opacity=".5"><circle cx="300" cy="205" r="3"/><circle cx="270" cy="205" r="2"/><circle cx="330" cy="210" r="2"/></g>
+</svg>

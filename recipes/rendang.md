@@ -3,12 +3,13 @@ title: Rendang Sapi
 description: Das langsam geschmorte Rindfleisch aus Sumatra in Kokos und Gewürzen – einmal zum „besten Gericht der Welt" gewählt.
 category: Hauptgericht
 cuisine: Sumatra
+image: assets/img/rendang.svg
 prep_time: 30
 cook_time: 180
 servings: 6
 difficulty: Anspruchsvoll
 tags: [rind, schmoren, kokos, festessen]
-author: Tina
+author: Florian Ball
 date: 2026-06-10
 featured: false
 ---

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Nasi Goreng">
+  <defs><radialGradient id="t" cx="50%" cy="40%" r="70%"><stop offset="0%" stop-color="#f4e7c9"/><stop offset="100%" stop-color="#e0c594"/></radialGradient></defs>
+  <rect width="600" height="400" fill="url(#t)"/>
+  <circle cx="300" cy="200" r="152" fill="#fffaf0"/>
+  <circle cx="300" cy="200" r="152" fill="none" stroke="#e7d8bd" stroke-width="6"/>
+  <circle cx="300" cy="200" r="120" fill="#e8b552"/>
+  <g fill="#d99a34">
+    <ellipse cx="260" cy="165" rx="9" ry="5" transform="rotate(20 260 165)"/><ellipse cx="320" cy="150" rx="9" ry="5" transform="rotate(-30 320 150)"/>
+    <ellipse cx="350" cy="200" rx="9" ry="5" transform="rotate(10 350 200)"/><ellipse cx="250" cy="230" rx="9" ry="5" transform="rotate(-15 250 230)"/>
+    <ellipse cx="300" cy="250" rx="9" ry="5" transform="rotate(40 300 250)"/><ellipse cx="220" cy="195" rx="9" ry="5" transform="rotate(0 220 195)"/>
+    <ellipse cx="345" cy="255" rx="9" ry="5" transform="rotate(60 345 255)"/><ellipse cx="290" cy="195" rx="9" ry="5" transform="rotate(25 290 195)"/>
+  </g>
+  <g fill="#c0432b"><circle cx="270" cy="185" r="6"/><circle cx="330" cy="225" r="6"/><circle cx="240" cy="255" r="5"/></g>
+  <g fill="#2f7d4f"><circle cx="310" cy="175" r="6"/><circle cx="255" cy="210" r="5"/><circle cx="350" cy="230" r="5"/></g>
+  <circle cx="300" cy="205" r="42" fill="#fff7e6"/>
+  <circle cx="300" cy="205" r="20" fill="#f4b400"/>
+</svg>
