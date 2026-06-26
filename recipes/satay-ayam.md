@@ -3,7 +3,6 @@ title: Satay Ayam mit Erdnusssauce
 description: Marinierte Hähnchenspieße vom Grill mit cremiger Erdnusssauce – der König des indonesischen Streetfoods.
 category: Streetfood
 cuisine: Indonesisch
-image: assets/img/satay-ayam.svg
 prep_time: 30
 cook_time: 15
 servings: 4
