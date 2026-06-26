@@ -7,8 +7,8 @@
   --paper:    #ffffff;
   --cream:    #fbf4e4;
   --cream-2:  #f4e9d2;
-  --amber:    #ffc65a;
-  --amber-dk: #e3a52f;
+  --amber:    #e0a12e;
+  --amber-dk: #c2871d;
   --brown:    #57340d;
   --brown-dk: #36270f;
   --brown-soft:#8a6a44;
@@ -69,6 +69,7 @@ p { color: var(--brown); }
 .site-header { background: var(--cream); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 50; }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; }
 .brand { display: inline-flex; align-items: center; gap: .55rem; }
+.brand-logo { width: 42px; height: 42px; object-fit: contain; }
 .brand-name { font-family: var(--f-serif); font-weight: 700; font-size: 1.4rem; color: var(--brown-dk); line-height: 1; }
 .brand-name small { display: block; font-family: var(--f-sans); font-weight: 500; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brown-soft); margin-top: 3px; }
 

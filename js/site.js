@@ -9,13 +9,7 @@ const NAV = [
 ];
 
 function brandMark() {
-  return `
-  <svg width="38" height="38" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-    <circle cx="20" cy="20" r="19" fill="#57340d"/>
-    <path d="M8 23h24c0 6.6-5.4 11-12 11S8 29.6 8 23z" fill="#ffc65a"/>
-    <path d="M8 23h24a2.5 2.5 0 0 0-2.5-2.5h-19A2.5 2.5 0 0 0 8 23z" fill="#fbf4e4"/>
-    <path d="M15 17c1.2-2 4-2 5 0M22 14c1.2-2 4-2 5 0" stroke="#fbf4e4" stroke-width="1.8" stroke-linecap="round"/>
-  </svg>`;
+  return `<img class="brand-logo" src="assets/img/logo.png" width="42" height="42" alt="" aria-hidden="true">`;
 }
 
 function buildHeader() {
