@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezept anlegen · Kaki Lima</title>
+  <meta name="description" content="Fülle das Formular aus – Kaki Lima erzeugt automatisch die fertige Markdown-Datei für dein Rezept.">
+  <link rel="icon" href="assets/img/logo.png">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="site-header-slot"></div>
+
+  <main>
+    <div class="wrap narrow">
+      <header class="page-head">
+        <h1>Rezept anlegen</h1>
+        <p class="muted">Fülle die Felder aus – unten entsteht automatisch die fertige Markdown-Datei. Anschließend kopieren oder herunterladen und in den Ordner <code>recipes/</code> legen. Details im <a href="leitfaden.html">Leitfaden</a>.</p>
+      </header>
+
+      <form id="genForm" class="gen-form" novalidate>
+        <fieldset>
+          <legend>Eckdaten</legend>
+          <div class="grid2">
+            <label class="field span2">
+              <span>Titel <em>*</em></span>
+              <input type="text" id="f-title" placeholder="Nasi Goreng" required>
+            </label>
+            <label class="field span2">
+              <span>Kurzbeschreibung</span>
+              <input type="text" id="f-description" placeholder="Gebratener Reis – würzig und in 20 Minuten fertig.">
+            </label>
+            <label class="field">
+              <span>Kategorie</span>
+              <input type="text" id="f-category" list="cats" placeholder="Hauptgericht">
+              <datalist id="cats">
+                <option>Hauptgericht</option><option>Streetfood</option>
+                <option>Vegetarisch</option><option>Vorspeise</option>
+                <option>Dessert</option><option>Sambal &amp; Beilagen</option>
+              </datalist>
+            </label>
+            <label class="field">
+              <span>Region / Küche</span>
+              <input type="text" id="f-cuisine" placeholder="Java, Bali, Sumatra …">
+            </label>
+            <label class="field">
+              <span>Vorbereitung (Min.)</span>
+              <input type="number" id="f-prep" min="0" placeholder="15">
+            </label>
+            <label class="field">
+              <span>Kochzeit (Min.)</span>
+              <input type="number" id="f-cook" min="0" placeholder="10">
+            </label>
+            <label class="field">
+              <span>Portionen</span>
+              <input type="number" id="f-servings" min="1" placeholder="2">
+            </label>
+            <label class="field">
+              <span>Schwierigkeit</span>
+              <select id="f-difficulty">
+                <option value="">– keine Angabe –</option>
+                <option>Einfach</option><option>Mittel</option><option>Anspruchsvoll</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Tags <small>(Komma-getrennt)</small></span>
+              <input type="text" id="f-tags" placeholder="reis, schnell, scharf">
+            </label>
+            <label class="field">
+              <span>Autor:in</span>
+              <input type="text" id="f-author" placeholder="Dein Name">
+            </label>
+            <label class="field">
+              <span>Datum</span>
+              <input type="date" id="f-date">
+            </label>
+            <label class="field">
+              <span>Bildpfad <small>(optional)</small></span>
+              <input type="text" id="f-image" placeholder="assets/img/nasi-goreng.jpg">
+            </label>
+            <label class="field checkbox span2">
+              <input type="checkbox" id="f-featured">
+              <span>Auf der Startseite hervorheben (<code>featured</code>)</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Inhalt</legend>
+          <label class="field">
+            <span>Einleitung <small>(ein paar Sätze zum Gericht)</small></span>
+            <textarea id="f-intro" rows="3" placeholder="Ein paar einleitende Sätze zum Gericht."></textarea>
+          </label>
+          <label class="field">
+            <span>Zutaten <small>(eine pro Zeile)</small></span>
+            <textarea id="f-ingredients" rows="6" placeholder="300 g gekochter Reis&#10;2 EL Kecap Manis&#10;2 Eier"></textarea>
+          </label>
+          <label class="field">
+            <span>Zubereitung <small>(ein Schritt pro Zeile)</small></span>
+            <textarea id="f-steps" rows="6" placeholder="Knoblauch in heißem Öl anbraten.&#10;Reis zugeben und kurz mitbraten.&#10;Mit Kecap Manis würzen und die Eier unterheben."></textarea>
+          </label>
+          <label class="field">
+            <span>Tipps <small>(optional, eine pro Zeile)</small></span>
+            <textarea id="f-tips" rows="3" placeholder="Kalter Reis vom Vortag wird schön körnig."></textarea>
+          </label>
+        </fieldset>
+      </form>
+
+      <section class="gen-output">
+        <div class="gen-output-head">
+          <h2>Deine Markdown-Datei</h2>
+          <span class="muted" id="fileName">rezept.md</span>
+        </div>
+        <pre><code id="genOut"></code></pre>
+        <div class="gen-actions">
+          <button class="btn btn--primary" id="btnCopy" type="button">Kopieren</button>
+          <button class="btn btn--ghost" id="btnDownload" type="button">Als .md herunterladen</button>
+          <a class="btn btn--ghost" href="https://github.com/leotrax3d/kakilima/tree/main/recipes" target="_blank" rel="noopener">Ordner auf GitHub</a>
+        </div>
+        <p class="muted gen-hint">Lege die Datei in <code>recipes/</code> ab und pushe sie – das Rezept erscheint automatisch.</p>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-footer-slot"></div>
+
+  <script src="js/site.js"></script>
+  <script src="js/generator.js"></script>
+</body>
+</html>

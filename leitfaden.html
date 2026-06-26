@@ -15,11 +15,16 @@
   <main>
     <div class="wrap narrow">
       <header class="page-head">
-        <h1>Rezept anlegen</h1>
+        <h1>Leitfaden</h1>
         <p class="muted">Jedes Rezept ist eine Markdown-Datei im Ordner <code>recipes/</code>. So baust du sie auf – inklusive Bild.</p>
       </header>
 
       <div class="prose">
+        <div class="callout">
+          <strong>Schneller geht's mit dem Formular</strong>
+          <p style="margin:.4rem 0 0">Den <a href="generator.html">Rezept-Generator</a> ausfüllen – er erzeugt die fertige Markdown-Datei automatisch zum Kopieren oder Herunterladen. Dieser Leitfaden erklärt den Aufbau im Detail.</p>
+        </div>
+
         <div class="callout">
           <strong>In drei Schritten</strong>
           <ol style="margin:.5rem 0 0">
@@ -106,7 +111,7 @@ Ein paar einleitende Sätze zum Gericht.
         <ul>
           <li>Erlaubt sind <code>.jpg</code>, <code>.png</code>, <code>.webp</code> oder <code>.svg</code>.</li>
           <li>Empfohlen: Querformat (etwa 3:2 oder 16:9), mindestens 1000 px breit.</li>
-          <li>Ohne <code>image</code> zeigt die Seite ein dezentes Platzhalter-Motiv.</li>
+          <li>Ohne <code>image</code> wird automatisch ein passendes Platzhalter-Foto geladen.</li>
         </ul>
         <p>Zusätzliche Bilder mitten im Text gehen ganz normal in Markdown:</p>
         <pre><code>![Fertiges Rendang im Topf](assets/img/rendang-topf.jpg)</code></pre>

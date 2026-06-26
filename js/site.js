@@ -5,7 +5,7 @@
 const NAV = [
   { href: "index.html",     label: "Startseite" },
   { href: "rezepte.html",   label: "Rezepte" },
-  { href: "leitfaden.html", label: "Rezept anlegen" },
+  { href: "generator.html", label: "Rezept anlegen" },
 ];
 
 function brandMark() {

@@ -59,6 +59,16 @@ function totalTime(d) {
 }
 function recipeImage(d) { return d.image || d.bild || ""; }
 
+/* recipes without an own photo fall back to a deterministic placeholder
+   from the Lorem Picsum API (stable per recipe via the slug seed). */
+function placeholderPhoto(seed, w, h) {
+  const s = encodeURIComponent("kakilima-" + String(seed || "rezept").toLowerCase().replace(/\s+/g, "-"));
+  return `https://picsum.photos/seed/${s}/${w}/${h}`;
+}
+function displayImage(d, w, h) {
+  return recipeImage(d) || placeholderPhoto(d.slug || d.title, w || 800, h || 600);
+}
+
 /* ---- icons ---- */
 const ICONS = {
   clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12V7.5"/><path d="M12 12l3.2 1.8"/></svg>`,
@@ -95,7 +105,7 @@ function recipeCard(r) {
   return `
   <article class="recipe-card">
     <a href="rezept.html?slug=${encodeURIComponent(r.slug)}">
-      <div class="thumb">${thumbMedia(recipeImage(r), r.title)}${cat}</div>
+      <div class="thumb">${thumbMedia(displayImage(r, 800, 600), r.title)}${cat}</div>
       <div class="body">
         <h3>${escapeHtml(r.title)}</h3>
         <p>${escapeHtml(r.description || "")}</p>
@@ -114,7 +124,7 @@ function recipeRow(r) {
   return `
   <article class="recipe-row">
     <a href="rezept.html?slug=${encodeURIComponent(r.slug)}">
-      <div class="thumb">${thumbMedia(recipeImage(r), r.title)}</div>
+      <div class="thumb">${thumbMedia(displayImage(r, 480, 360), r.title)}</div>
       <div class="body">
         <div class="top">
           <h3>${escapeHtml(r.title)}</h3>
