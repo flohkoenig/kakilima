@@ -1,97 +1,41 @@
-# Kaki Lima 🍜
+# Kaki Lima
 
-Indonesische Straßenküche zum Nachkochen — als schnelle, statische Website mit
-einem **Markdown-basierten Rezept-System**. Jedes Rezept ist eine `.md`-Datei im
-Ordner [`recipes/`](recipes/) und erscheint automatisch auf der Seite.
+Indonesische Küche und mehr… — ein schlichter, statischer Rezeptblog. Jedes
+Rezept ist eine Markdown-Datei im Ordner [`recipes/`](recipes/) und erscheint
+automatisch auf der Website.
 
-> „Kaki Lima" sind die fahrbaren Garküchen Indonesiens — der Name heißt wörtlich
-> „fünf Beine".
-
-## ✨ Features
-
-- **Rezepte als Markdown** – eine Datei pro Rezept, mit Front-Matter-Metadaten.
-- **Automatischer Index** – eine GitHub-Action baut beim Push `recipes/index.json`.
-- **Suche & Filter** – nach Name, Zutat, Kategorie und Tags.
-- **Aufgewertetes Design** – warme Gewürz-Palette, moderne Typografie, responsive.
-- **Keine Abhängigkeiten** – reines HTML/CSS/JS inkl. eigenem Markdown-Renderer,
-  läuft direkt auf GitHub Pages (kein Build-Tool nötig).
-
-## 📁 Projektstruktur
+## Aufbau
 
 ```
-.
-├── index.html            # Startseite
-├── rezepte.html          # Übersicht aller Rezepte (Suche/Filter)
-├── rezept.html           # Einzelnes Rezept (?slug=…)
-├── leitfaden.html        # Anleitung: Rezept als Markdown anlegen
-├── ueber-uns.html        # Über uns / Impressum
-├── css/styles.css        # Design-System
-├── js/
-│   ├── site.js           # Header/Footer, Navigation, Scroll-Effekte
-│   ├── markdown.js       # eigener, schlanker Markdown-Renderer
-│   ├── recipes-data.js   # Front-Matter-Parser, Karten, Helfer
-│   ├── recipes-list.js   # Übersicht: Suche & Filter
-│   ├── recipe-detail.js  # Einzelrezept rendern
-│   └── home.js           # Startseite: Highlights
-├── recipes/
-│   ├── *.md              # 👉 hier kommen die Rezepte rein
-│   ├── index.json        # generiert – nicht von Hand bearbeiten
-│   └── README.md         # Kurzanleitung im Ordner
-├── scripts/build-index.mjs   # baut recipes/index.json
-└── .github/workflows/build-recipe-index.yml
+index.html        Startseite (Intro + neueste Rezepte)
+rezepte.html      Übersicht (Suche & Kategorie-Filter)
+rezept.html       Einzelrezept (?slug=…)
+leitfaden.html    Anleitung: Rezept als Markdown anlegen
+impressum.html    Impressum & Kontakt
+css/ js/          Styles und Logik (inkl. eigener Markdown-Renderer)
+recipes/          die Rezepte als .md  +  generierte index.json
+assets/img/       Rezeptbilder
+scripts/build-index.mjs              baut recipes/index.json
+.github/workflows/build-recipe-index.yml
 ```
 
-## 📝 Ein Rezept hinzufügen
+## Rezept hinzufügen
 
-1. Lege eine Datei `recipes/dein-rezept.md` an (Kleinbuchstaben, Bindestriche).
-2. Beginne mit einem Front-Matter-Block und schreib `## Zutaten` / `## Zubereitung`.
-3. Committe & pushe — der Index wird automatisch gebaut.
+Eine Datei `recipes/dein-rezept.md` anlegen, committen und pushen. Die genaue
+Struktur (Front Matter, Abschnitte, Bild) steht im Leitfaden auf der Website
+(`leitfaden.html`).
 
-Die ausführliche Anleitung steht auf der Seite **„Rezept anlegen"**
-(`leitfaden.html`) und im [`recipes/README.md`](recipes/README.md).
-
-Minimalbeispiel:
-
-```markdown
----
-title: Nasi Goreng
-description: Gebratener Reis – würzig und schnell.
-category: Hauptgericht
-prep_time: 15
-cook_time: 10
-servings: 2
-difficulty: Einfach
-tags: [reis, schnell]
-date: 2026-06-26
----
-
-## Zutaten
-- 300 g Reis
-- 2 EL Kecap Manis
-
-## Zubereitung
-1. Reis anbraten.
-2. Würzen und servieren.
-```
-
-## 🛠️ Lokal entwickeln
-
-Reine statische Seite — irgendein Webserver genügt:
+## Lokal
 
 ```bash
-# Rezept-Index (neu) bauen
-node scripts/build-index.mjs
-
-# lokal servieren
-python3 -m http.server 8000
-# → http://localhost:8000
+node scripts/build-index.mjs   # Index neu bauen
+python3 -m http.server 8000    # → http://localhost:8000
 ```
 
-## 🚀 Deployment (GitHub Pages)
+## Deployment (GitHub Pages)
 
-1. In den Repo-Einstellungen unter **Settings → Pages** als Quelle
-   **„GitHub Actions"** wählen.
-2. Beim Push auf `main` baut die Action den Index und veröffentlicht die Seite.
+In **Settings → Pages** als Quelle **„GitHub Actions"** wählen. Beim Push auf
+`main` baut die Action den Index und veröffentlicht die Seite.
 
 ## Lizenz
 

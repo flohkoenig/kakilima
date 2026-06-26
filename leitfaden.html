@@ -3,57 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rezept anlegen · Leitfaden · Kaki Lima</title>
-  <meta name="description" content="So strukturierst du eine Markdown-Datei, damit dein Rezept automatisch auf Kaki Lima erscheint.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%23c1432b'/%3E%3Cpath d='M10 28h28a2 2 0 0 1-2 4H12a2 2 0 0 1-2-4z' fill='%23e2a32d'/%3E%3C/svg%3E">
+  <title>Rezept anlegen · Kaki Lima</title>
+  <meta name="description" content="So legst du eine Markdown-Datei an, damit dein Rezept automatisch auf Kaki Lima erscheint – inklusive Bild.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%2357340d'/%3E%3Cpath d='M8 23h24c0 6.6-5.4 11-12 11S8 29.6 8 23z' fill='%23ffc65a'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div id="site-header-slot"></div>
 
   <main>
-    <header class="page-head wrap">
-      <p class="eyebrow center">Mitmachen</p>
-      <h1>Rezept anlegen</h1>
-      <p class="lead">Ein Rezept ist eine einzige Markdown-Datei. Hier erfährst du genau, wie du sie aufbaust, damit die Seite alles automatisch übernimmt.</p>
-    </header>
+    <div class="wrap narrow">
+      <header class="page-head">
+        <span class="eyebrow">Mitmachen</span>
+        <h1>Rezept anlegen</h1>
+        <p class="lead muted">Jedes Rezept ist eine einzige Markdown-Datei im Ordner <code>recipes/</code>. Hier steht, wie du sie aufbaust – inklusive Bild.</p>
+      </header>
 
-    <section class="section--tight" style="padding-top:0">
-      <div class="wrap prose">
-
+      <div class="prose">
         <div class="callout">
-          <strong>Kurzfassung in 3 Schritten</strong>
-          <ol style="margin:.6rem 0 0">
-            <li>Erstelle eine Datei <code>recipes/dein-rezept.md</code>.</li>
-            <li>Kopiere die <a href="#vorlage">Vorlage</a> hinein und füll sie aus.</li>
-            <li>Committe &amp; pushe — die GitHub-Action baut den Index, das Rezept erscheint automatisch.</li>
+          <strong>In drei Schritten</strong>
+          <ol style="margin:.5rem 0 0">
+            <li>Datei <code>recipes/dein-rezept.md</code> anlegen.</li>
+            <li><a href="#vorlage">Vorlage</a> einfügen und ausfüllen.</li>
+            <li>Committen &amp; pushen – der Index wird automatisch gebaut, das Rezept erscheint.</li>
           </ol>
         </div>
 
-        <h2 id="dateiname">1 · Dateiname &amp; Ort</h2>
-        <p>Lege deine Datei im Ordner <code>recipes/</code> ab. Der Dateiname (ohne <code>.md</code>) wird zur Web-Adresse („Slug") des Rezepts:</p>
-        <pre><code>recipes/nasi-goreng.md   →   /rezept.html?slug=nasi-goreng</code></pre>
+        <h2 id="dateiname">1 · Dateiname</h2>
+        <p>Lege die Datei im Ordner <code>recipes/</code> ab. Der Dateiname (ohne <code>.md</code>) wird zur Web-Adresse:</p>
+        <pre><code>recipes/nasi-goreng.md  →  /rezept.html?slug=nasi-goreng</code></pre>
         <ul>
-          <li>Nur Kleinbuchstaben, Zahlen und Bindestriche verwenden.</li>
-          <li>Keine Leerzeichen, Umlaute oder Sonderzeichen (also <code>gado-gado.md</code>, nicht <code>Gado Gado.md</code>).</li>
+          <li>Nur Kleinbuchstaben, Zahlen und Bindestriche – keine Leerzeichen oder Umlaute.</li>
           <li>Jeder Dateiname muss eindeutig sein.</li>
         </ul>
 
-        <h2 id="aufbau">2 · Aufbau einer Rezeptdatei</h2>
-        <p>Jede Datei besteht aus <strong>zwei Teilen</strong>:</p>
-        <ol>
-          <li><strong>Front&nbsp;Matter</strong> — ein Block zwischen <code>---</code>-Linien ganz oben mit den Metadaten (Titel, Zeiten, Portionen …).</li>
-          <li><strong>Inhalt</strong> — der eigentliche Rezepttext in Markdown, mit den Abschnitten <code>## Zutaten</code> und <code>## Zubereitung</code>.</li>
-        </ol>
-
-        <h2 id="vorlage">3 · Komplette Vorlage zum Kopieren</h2>
-        <p>Kopiere diesen Block in deine neue Datei und passe ihn an:</p>
+        <h2 id="vorlage">2 · Vorlage zum Kopieren</h2>
+        <p>Eine Rezeptdatei besteht aus dem <strong>Front Matter</strong> (Metadaten zwischen zwei <code>---</code>-Zeilen) und dem <strong>Inhalt</strong> in Markdown.</p>
         <pre><code>---
 title: Nasi Goreng
-description: Indonesiens berühmtester gebratener Reis – würzig, rauchig und in 20 Minuten fertig.
+description: Gebratener Reis – würzig und in 20 Minuten fertig.
 category: Hauptgericht
 cuisine: Indonesisch
 image: assets/img/nasi-goreng.jpg
@@ -61,103 +52,78 @@ prep_time: 15
 cook_time: 10
 servings: 2
 difficulty: Einfach
-tags: [reis, schnell, streetfood]
-author: Tina
+tags: [reis, schnell]
+author: Dein Name
 date: 2026-06-26
 featured: true
 ---
 
-Ein paar einleitende Sätze zum Gericht: Woher es kommt,
-warum du es lieben wirst, worauf es ankommt.
+Ein paar einleitende Sätze zum Gericht.
 
 ## Zutaten
 
-- 300 g gekochter Reis (am besten vom Vortag)
-- 2 EL Kecap Manis (süße Sojasauce)
-- 2 Knoblauchzehen, fein gehackt
+- 300 g gekochter Reis
+- 2 EL Kecap Manis
 - 2 Eier
-- 1 EL Sambal Oelek
 
 ## Zubereitung
 
-1. Reis am Vortag kochen und kalt stellen.
-2. Knoblauch in heißem Öl anbraten, bis er duftet.
-3. Reis zugeben, Kecap Manis und Sambal unterrühren.
-4. Eier in die Pfanne schlagen und unterheben.
+1. Knoblauch in heißem Öl anbraten.
+2. Reis zugeben und kurz mitbraten.
+3. Mit Kecap Manis würzen und die Eier unterheben.
 
 ## Tipps
 
-&gt; Kalter Reis vom Vortag wird besser, weil er nicht matschig wird.
+&gt; Kalter Reis vom Vortag wird schön körnig.
 </code></pre>
 
-        <h2 id="felder">4 · Die Metadaten-Felder im Detail</h2>
-        <p>Im Front&nbsp;Matter steuerst du, wie das Rezept in der Übersicht und auf der Detailseite erscheint.</p>
+        <h2 id="felder">3 · Die Felder</h2>
         <table>
-          <thead><tr><th>Feld</th><th>Pflicht?</th><th>Bedeutung</th></tr></thead>
+          <thead><tr><th>Feld</th><th>Pflicht</th><th>Bedeutung</th></tr></thead>
           <tbody>
-            <tr><td><code>title</code></td><td>✅ Ja</td><td>Name des Rezepts (Überschrift &amp; Kartentitel).</td></tr>
-            <tr><td><code>description</code></td><td>Empfohlen</td><td>Ein bis zwei Sätze für Kartenvorschau &amp; SEO.</td></tr>
-            <tr><td><code>category</code></td><td>Empfohlen</td><td>Filter-Kategorie, z. B. <code>Hauptgericht</code>, <code>Streetfood</code>, <code>Vegetarisch</code>, <code>Sambal &amp; Beilagen</code>.</td></tr>
-            <tr><td><code>cuisine</code></td><td>Optional</td><td>Küche/Region, z. B. <code>Indonesisch</code>, <code>Sumatra</code>.</td></tr>
-            <tr><td><code>image</code></td><td>Optional</td><td>Pfad zu einem Bild, z. B. <code>assets/img/datei.jpg</code>. Fehlt es, zeigt die Seite ein stilvolles Platzhalter-Motiv.</td></tr>
-            <tr><td><code>prep_time</code></td><td>Optional</td><td>Vorbereitungszeit in <strong>Minuten</strong> (nur die Zahl).</td></tr>
-            <tr><td><code>cook_time</code></td><td>Optional</td><td>Koch-/Garzeit in <strong>Minuten</strong>.</td></tr>
-            <tr><td><code>total_time</code></td><td>Optional</td><td>Gesamtzeit. Ohne Angabe wird <code>prep_time + cook_time</code> gerechnet.</td></tr>
-            <tr><td><code>servings</code></td><td>Optional</td><td>Anzahl Portionen (Zahl).</td></tr>
-            <tr><td><code>difficulty</code></td><td>Optional</td><td><code>Einfach</code>, <code>Mittel</code> oder <code>Anspruchsvoll</code>.</td></tr>
-            <tr><td><code>tags</code></td><td>Optional</td><td>Liste von Schlagwörtern: <code>[reis, scharf, vegan]</code>. Auch durchsuchbar.</td></tr>
-            <tr><td><code>author</code></td><td>Optional</td><td>Wer das Rezept beigetragen hat.</td></tr>
-            <tr><td><code>date</code></td><td>Empfohlen</td><td>Datum <code>JJJJ-MM-TT</code>. Steuert die Sortierung (neueste zuerst).</td></tr>
-            <tr><td><code>featured</code></td><td>Optional</td><td><code>true</code>, um das Rezept auf der Startseite hervorzuheben.</td></tr>
+            <tr><td><code>title</code></td><td>ja</td><td>Name des Rezepts</td></tr>
+            <tr><td><code>description</code></td><td>empf.</td><td>Kurztext für Karte &amp; Vorschau</td></tr>
+            <tr><td><code>category</code></td><td>empf.</td><td>Filter-Kategorie, z. B. <code>Hauptgericht</code>, <code>Streetfood</code>, <code>Vegetarisch</code></td></tr>
+            <tr><td><code>cuisine</code></td><td>opt.</td><td>Region, z. B. <code>Bali</code>, <code>Sumatra</code></td></tr>
+            <tr><td><code>image</code></td><td>opt.</td><td>Bildpfad – siehe Abschnitt 5</td></tr>
+            <tr><td><code>prep_time</code> / <code>cook_time</code></td><td>opt.</td><td>Zeiten in <strong>Minuten</strong> (nur die Zahl)</td></tr>
+            <tr><td><code>servings</code></td><td>opt.</td><td>Anzahl Portionen</td></tr>
+            <tr><td><code>difficulty</code></td><td>opt.</td><td><code>Einfach</code> / <code>Mittel</code> / <code>Anspruchsvoll</code></td></tr>
+            <tr><td><code>tags</code></td><td>opt.</td><td>Schlagwörter: <code>[reis, scharf]</code></td></tr>
+            <tr><td><code>author</code></td><td>opt.</td><td>Wer das Rezept beigetragen hat</td></tr>
+            <tr><td><code>date</code></td><td>empf.</td><td><code>JJJJ-MM-TT</code> – steuert die Sortierung</td></tr>
+            <tr><td><code>featured</code></td><td>opt.</td><td><code>true</code> = oben in der Liste</td></tr>
           </tbody>
         </table>
 
-        <h2 id="struktur">5 · Regeln für die Inhalts-Abschnitte</h2>
+        <h2 id="inhalt">4 · Zutaten &amp; Zubereitung</h2>
         <ul>
-          <li>Benutze Überschriften der zweiten Ebene (<code>## …</code>) für jeden Abschnitt.</li>
-          <li>Der Abschnitt <code>## Zutaten</code> wird automatisch erkannt und als Box neben die Zubereitung gestellt. Schreib darin eine <strong>Aufzählung</strong> (jede Zeile beginnt mit <code>-</code>).</li>
-          <li>Im Abschnitt <code>## Zubereitung</code> nutzt du eine <strong>nummerierte Liste</strong> (<code>1.</code>, <code>2.</code> …). Die Schritte werden automatisch hübsch nummeriert.</li>
-          <li>Weitere Abschnitte wie <code>## Tipps</code>, <code>## Variationen</code> oder <code>## Dazu passt</code> sind frei wählbar.</li>
-          <li>Mit <code>&gt;</code> erzeugst du ein hervorgehobenes Zitat/einen Tipp-Kasten.</li>
-          <li><code>**fett**</code>, <code>*kursiv*</code>, Links und Tabellen funktionieren wie in normalem Markdown.</li>
+          <li>Den Abschnitt genau als <code>## Zutaten</code> überschreiben – er wird automatisch in die seitliche Zutatenbox gestellt. Darin eine <strong>Aufzählung</strong> (Zeilen mit <code>-</code>).</li>
+          <li>Die <code>## Zubereitung</code> als <strong>nummerierte Liste</strong> (<code>1.</code>, <code>2.</code> …) – die Schritte werden automatisch durchnummeriert.</li>
+          <li>Weitere Abschnitte wie <code>## Tipps</code> sind frei. Mit <code>&gt;</code> entsteht ein Tipp-Kasten; <code>**fett**</code> und <code>*kursiv*</code> funktionieren wie üblich.</li>
         </ul>
 
-        <div class="callout">
-          <strong>Wichtig:</strong> Schreib den Zutaten-Abschnitt genau als <code>## Zutaten</code>
-          (oder <code>## Ingredients</code>). Nur dann landet er automatisch in der seitlichen Zutatenbox.
-        </div>
-
-        <h2 id="bilder">6 · Bilder hinzufügen</h2>
-        <p>Lege Bilder in <code>assets/img/</code> ab und verweise im Front&nbsp;Matter darauf:</p>
+        <h2 id="bild">5 · Ein Bild hinzufügen</h2>
+        <p>Lege dein Foto in den Ordner <code>assets/img/</code> und verweise im Front Matter darauf:</p>
         <pre><code>image: assets/img/rendang.jpg</code></pre>
-        <p>Im Rezepttext kannst du zusätzliche Bilder einbinden:</p>
+        <ul>
+          <li>Erlaubt sind <code>.jpg</code>, <code>.png</code>, <code>.webp</code> oder <code>.svg</code>.</li>
+          <li>Empfohlen: Querformat (etwa 3:2 oder 16:9), mindestens 1000 px breit.</li>
+          <li>Ohne <code>image</code> zeigt die Seite ein dezentes Platzhalter-Motiv.</li>
+        </ul>
+        <p>Zusätzliche Bilder mitten im Text gehen ganz normal in Markdown:</p>
         <pre><code>![Fertiges Rendang im Topf](assets/img/rendang-topf.jpg)</code></pre>
 
-        <h2 id="veroeffentlichen">7 · Veröffentlichen</h2>
-        <p>Sobald du die Datei committest und pushst, passiert automatisch Folgendes:</p>
-        <ol>
-          <li>Die GitHub-Action <code>build-recipe-index</code> liest alle Dateien in <code>recipes/</code>.</li>
-          <li>Sie erzeugt die Datei <code>recipes/index.json</code> mit allen Metadaten.</li>
-          <li>Die Übersichtsseite liest diesen Index und zeigt dein Rezept an.</li>
-        </ol>
-        <p>Du möchtest den Index lokal bauen, bevor du pushst? Führe einfach aus:</p>
+        <h2 id="push">6 · Veröffentlichen</h2>
+        <p>Nach dem Push erzeugt eine GitHub-Action automatisch <code>recipes/index.json</code> und veröffentlicht die Seite. Lokal vorab bauen:</p>
         <pre><code>node scripts/build-index.mjs</code></pre>
 
-        <div class="callout" style="border-left-color:var(--c-chili);background:color-mix(in srgb, var(--c-chili) 8%, var(--c-paper))">
-          <strong style="color:var(--c-chili-dk)">Checkliste vor dem Push</strong>
-          <ul style="margin:.6rem 0 0">
-            <li>Dateiname klein, mit Bindestrichen, im Ordner <code>recipes/</code>.</li>
-            <li>Front&nbsp;Matter zwischen zwei <code>---</code>-Zeilen, mindestens <code>title</code> gesetzt.</li>
-            <li>Abschnitte <code>## Zutaten</code> (Aufzählung) und <code>## Zubereitung</code> (nummeriert) vorhanden.</li>
-          </ul>
-        </div>
-
-        <p style="margin-top:2.5rem;text-align:center">
+        <p style="margin-top:2rem">
           <a class="btn btn--primary" href="https://github.com/leotrax3d/kakilima/tree/main/recipes" target="_blank" rel="noopener">Ordner auf GitHub öffnen</a>
           <a class="btn btn--ghost" href="rezepte.html">Beispiele ansehen</a>
         </p>
       </div>
-    </section>
+    </div>
   </main>
 
   <div id="site-footer-slot"></div>

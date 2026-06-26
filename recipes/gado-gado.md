@@ -3,12 +3,13 @@ title: Gado-Gado
 description: Indonesiens bunter Gemüsesalat mit warmer Erdnusssauce – knackig, sättigend und komplett vegetarisch.
 category: Vegetarisch
 cuisine: Indonesisch
+image: assets/img/gado-gado.svg
 prep_time: 25
 cook_time: 15
 servings: 4
 difficulty: Einfach
 tags: [vegetarisch, salat, erdnuss, gesund]
-author: Tina
+author: Florian Ball
 date: 2026-06-15
 featured: true
 ---

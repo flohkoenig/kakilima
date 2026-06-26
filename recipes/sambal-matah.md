@@ -3,12 +3,13 @@ title: Sambal Matah
 description: Balis frische Rohkost-Sambal aus Zitronengras, Schalotten und Limette – feurig, zitrisch und in 10 Minuten gemacht.
 category: Sambal & Beilagen
 cuisine: Bali
+image: assets/img/sambal-matah.svg
 prep_time: 10
 cook_time: 0
 servings: 4
 difficulty: Einfach
 tags: [scharf, vegan, beilage, roh, schnell]
-author: Tina
+author: Florian Ball
 date: 2026-06-12
 featured: false
 ---
