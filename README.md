@@ -16,7 +16,7 @@ css/ js/          Styles und Logik (inkl. eigener Markdown-Renderer)
 recipes/          die Rezepte als .md  +  generierte index.json
 assets/img/       Rezeptbilder
 scripts/build-index.mjs              baut recipes/index.json
-.github/workflows/build-recipe-index.yml
+.github/workflows/deploy.yml         baut Index & deployt auf Pages
 ```
 
 ## Rezept hinzufügen
