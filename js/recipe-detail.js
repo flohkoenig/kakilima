@@ -53,8 +53,107 @@
     if (d.servings) out.push(["users", String(d.servings), "Portionen"]);
     if (d.difficulty) out.push(["gauge", d.difficulty, "Schwierigkeit"]);
     return out.map(([ic, val, lab]) =>
-      `<div class="fact">${ICONS[ic]}<span><b>${escapeHtml(val)}</b><small>${escapeHtml(lab)}</small></span></div>`
+      `<div class="fact"${lab === "Portionen" ? ' data-fact="servings"' : ""}>${ICONS[ic]}<span><b>${escapeHtml(val)}</b><small>${escapeHtml(lab)}</small></span></div>`
     ).join("");
+  }
+
+  /* ---------- portion calculator ----------
+     Scales the leading quantity of every ingredient line. Numbers are parsed
+     generically (integers, decimals "1,5", fractions "1/2", unicode "½",
+     ranges "2–3"), so nothing extra has to be declared in the markdown. */
+  const UNI_FRAC = { "½": .5, "⅓": 1/3, "⅔": 2/3, "¼": .25, "¾": .75, "⅕": .2, "⅖": .4, "⅗": .6, "⅘": .8, "⅙": 1/6, "⅚": 5/6, "⅛": .125, "⅜": .375, "⅝": .625, "⅞": .875 };
+  const NICE = [[0, ""], [.125, "⅛"], [.25, "¼"], [1/3, "⅓"], [.375, "⅜"], [.5, "½"], [.625, "⅝"], [2/3, "⅔"], [.75, "¾"], [.875, "⅞"], [1, ""]];
+
+  function readNumber(s) {
+    let m;
+    if ((m = s.match(/^(\d+)\s+(\d+)\/(\d+)/))) return { value: +m[1] + (+m[2] / +m[3]), len: m[0].length };
+    if ((m = s.match(/^(\d+)\/(\d+)/)))          return { value: +m[1] / +m[2], len: m[0].length };
+    if ((m = s.match(/^(\d+(?:[.,]\d+)?)/)))     return { value: parseFloat(m[1].replace(",", ".")), len: m[0].length };
+    if ((m = s.match(/^([½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞])/)))  return { value: UNI_FRAC[m[1]], len: 1 };
+    return null;
+  }
+
+  function parseLeadingQty(text) {
+    const lead = (text.match(/^\s*/) || [""])[0];
+    const rest = text.slice(lead.length);
+    const a = readNumber(rest);
+    if (!a) return null;
+    let len = a.len; const values = [a.value];
+    const after = rest.slice(a.len);
+    const rng = after.match(/^\s*(?:[–—-]|bis)\s+/);
+    if (rng) {
+      const b = readNumber(after.slice(rng[0].length));
+      if (b) { len += rng[0].length + b.len; values.push(b.value); }
+    }
+    return { lead, raw: rest.slice(0, len), values };
+  }
+
+  function niceNumber(n) {
+    if (!isFinite(n) || n <= 0) return "0";
+    if (n >= 10) return String(Math.round(n));
+    const whole = Math.floor(n + 1e-9), frac = n - whole;
+    let best = NICE[0], bd = Infinity;
+    for (const f of NICE) { const d = Math.abs(frac - f[0]); if (d < bd) { bd = d; best = f; } }
+    if (bd < 0.06) {
+      if (best[0] === 1) return String(whole + 1);
+      if (best[1]) return whole > 0 ? `${whole} ${best[1]}` : best[1];
+      return String(whole);
+    }
+    return (Math.round(n * 10) / 10).toString().replace(".", ",");
+  }
+
+  function wrapQty(li) {
+    const walker = document.createTreeWalker(li, NodeFilter.SHOW_TEXT, null);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (!node.nodeValue.trim()) continue;          // skip whitespace-only nodes
+      const q = parseLeadingQty(node.nodeValue);
+      if (!q) return false;                          // first real text has no leading quantity
+      const after = node.nodeValue.slice(q.lead.length + q.raw.length);
+      const span = document.createElement("span");
+      span.className = "qty";
+      span.dataset.base = q.values.join("|");
+      const frag = document.createDocumentFragment();
+      if (q.lead) frag.appendChild(document.createTextNode(q.lead));
+      frag.appendChild(span);
+      if (after) frag.appendChild(document.createTextNode(after));
+      node.parentNode.replaceChild(frag, node);
+      return true;
+    }
+    return false;
+  }
+
+  function applyFactor(scope, factor) {
+    scope.querySelectorAll(".qty").forEach(span => {
+      const vals = span.dataset.base.split("|").map(Number);
+      span.textContent = vals.map(v => niceNumber(v * factor)).join(" – ");
+    });
+  }
+
+  function initPortions(scope, base) {
+    const aside = scope.querySelector(".ingredients");
+    if (!aside) return;
+    let any = false;
+    aside.querySelectorAll(".md li").forEach(li => { if (wrapQty(li)) any = true; });
+    applyFactor(aside, 1);                            // normalise initial display
+
+    const ctrl = aside.querySelector(".portions");
+    const servFact = scope.querySelector('[data-fact="servings"] b');
+    if (!base || !any) { if (ctrl) ctrl.remove(); return; }
+
+    let cur = base;
+    const valEl = ctrl.querySelector(".p-val");
+    const minus = ctrl.querySelector(".p-minus");
+    function set(n) {
+      cur = Math.max(1, Math.min(99, n));
+      valEl.textContent = cur;
+      minus.disabled = cur <= 1;
+      applyFactor(aside, cur / base);
+      if (servFact) servFact.textContent = cur;
+    }
+    minus.addEventListener("click", () => set(cur - 1));
+    ctrl.querySelector(".p-plus").addEventListener("click", () => set(cur + 1));
+    set(base);
   }
 
   function setMeta(name, content) {
@@ -91,10 +190,10 @@
     document.title = `${d.title} · Kaki Lima`;
     setMeta("description", d.description || "");
 
-    const img = recipeImage(d);
+    const img = recipeImage(d) || placeholderPhoto(slug || d.title, 1200, 675);
     const photo = `<div class="recipe-photo">
         <div class="ph">${ICONS.utensils}</div>
-        ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(d.title)}" onerror="this.remove()">` : ""}
+        <img src="${escapeHtml(img)}" alt="${escapeHtml(d.title)}" onerror="this.remove()">
       </div>`;
 
     const tags = Array.isArray(d.tags) && d.tags.length
@@ -102,8 +201,19 @@
 
     const parts = splitBody(body);
     const hasIngredients = !!parts.ingredients;
+    const portions = Number(d.servings)
+      ? `<div class="portions no-print" role="group" aria-label="Portionen anpassen">
+           <button class="p-minus" type="button" aria-label="Weniger Portionen">−</button>
+           <span class="p-val">${escapeHtml(String(d.servings))}</span>
+           <span class="p-label">Portionen</span>
+           <button class="p-plus" type="button" aria-label="Mehr Portionen">+</button>
+         </div>`
+      : "";
     const ingredients = hasIngredients
-      ? `<aside class="ingredients"><h2>Zutaten</h2><div class="md">${parts.ingredients}</div></aside>`
+      ? `<aside class="ingredients">
+           <div class="ing-head"><h2>Zutaten</h2>${portions}</div>
+           <div class="md">${parts.ingredients}</div>
+         </aside>`
       : "";
 
     root.innerHTML = `
@@ -138,6 +248,7 @@
 
     root.querySelector("#btnShare").addEventListener("click", () => share(d));
     root.querySelector("#btnPdf").addEventListener("click", () => window.print());
+    initPortions(root, Number(d.servings) || 0);
   }
 
   async function init() {
