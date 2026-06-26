@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alle Rezepte · Kaki Lima</title>
+  <meta name="description" content="Stöbere durch alle Rezepte der indonesischen Straßenküche — suchen, filtern und nachkochen.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%23c1432b'/%3E%3Cpath d='M10 28h28a2 2 0 0 1-2 4H12a2 2 0 0 1-2-4z' fill='%23e2a32d'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="site-header-slot"></div>
+
+  <main>
+    <header class="page-head wrap">
+      <p class="eyebrow center">Die ganze Speisekarte</p>
+      <h1>Alle Rezepte</h1>
+      <p class="lead">Such dir aus, worauf du Lust hast — von feurigem Sambal bis zum sanften Soto.</p>
+    </header>
+
+    <section class="section--tight" style="padding-top:0">
+      <div class="wrap">
+        <div class="toolbar">
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" id="recipeSearch" placeholder="Rezept, Zutat oder Region suchen…" aria-label="Rezepte durchsuchen">
+          </label>
+        </div>
+        <div class="chips" id="catChips" role="group" aria-label="Nach Kategorie filtern" style="margin-bottom:1.4rem"></div>
+        <p class="result-count" id="resultCount"></p>
+        <div class="grid grid--3" id="recipeGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer-slot"></div>
+
+  <script src="js/site.js"></script>
+  <script src="js/recipes-data.js"></script>
+  <script src="js/recipes-list.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kaki Lima · Indonesische Straßenküche zum Nachkochen</title>
+  <meta name="description" content="Würzige, ehrliche Rezepte der indonesischen Straßenküche — Nasi Goreng, Rendang, Satay & mehr. Zum Nachkochen für jeden Tag.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='23' fill='%23c1432b'/%3E%3Cpath d='M10 28h28a2 2 0 0 1-2 4H12a2 2 0 0 1-2-4z' fill='%23e2a32d'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="site-header-slot"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <p class="eyebrow">Selamat makan!</p>
+          <h1>Die <span class="accent">Straßenküche</span> Indonesiens, bei dir zu&nbsp;Hause.</h1>
+          <p class="lead">Von der dampfenden Garküche an der Straßenecke direkt in deinen Wok: authentische Rezepte, ehrlich erklärt und Schritt für Schritt zum Nachkochen.</p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="rezepte.html">Rezepte entdecken</a>
+            <a class="btn btn--ghost" href="leitfaden.html">Eigenes Rezept beitragen</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><strong id="statCount">—</strong><span>Rezepte</span></div>
+            <div class="stat"><strong>100%</strong><span>aus dem Repo</span></div>
+            <div class="stat"><strong>♥</strong><span>Open Source</span></div>
+          </div>
+        </div>
+        <div class="hero-visual reveal">
+          <div class="hero-bowl">
+            <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <path d="M6 30h52c0 14-11 24-26 24S6 44 6 30z" fill="#fbf3e8"/>
+              <path d="M6 30h52a5 5 0 0 0-5-5H11a5 5 0 0 0-5 5z" fill="#e2a32d"/>
+              <path d="M20 19c2-4 7-4 9 0M33 14c2-4 7-4 9 0M27 22c2-4 7-4 9 0" stroke="#fbf3e8" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="24" cy="38" r="2.5" fill="#c1432b"/>
+              <circle cx="40" cy="40" r="2.5" fill="#2f6b52"/>
+              <circle cx="32" cy="44" r="2.5" fill="#6b3f2a"/>
+            </svg>
+          </div>
+          <div class="hero-badge hero-badge--a"><span class="dot" style="background:#fde6c4">🌶️</span> Echt würzig</div>
+          <div class="hero-badge hero-badge--b"><span class="dot" style="background:#d7eadf">🍚</span> Familienrezepte</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section--tight">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Stöbern</p>
+          <h2>Wonach ist dir heute?</h2>
+        </div>
+        <div class="grid grid--4">
+          <a class="cat-tile reveal" href="rezepte.html?cat=Streetfood"><span class="ico">🛺</span><h3>Streetfood</h3><span>Satay, Bakso & Co.</span></a>
+          <a class="cat-tile reveal" href="rezepte.html?cat=Hauptgericht"><span class="ico">🍛</span><h3>Hauptgerichte</h3><span>Herzhaft & sättigend</span></a>
+          <a class="cat-tile reveal" href="rezepte.html?cat=Vegetarisch"><span class="ico">🥬</span><h3>Vegetarisch</h3><span>Ohne Fleisch, voll Geschmack</span></a>
+          <a class="cat-tile reveal" href="rezepte.html?cat=Sambal &amp; Beilagen"><span class="ico">🌶️</span><h3>Sambal &amp; Beilagen</h3><span>Die scharfe Seele</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured recipes -->
+    <section class="section--tight">
+      <div class="wrap">
+        <div class="toolbar">
+          <div class="section-head" style="margin-bottom:0">
+            <p class="eyebrow">Frisch aus dem Repo</p>
+            <h2>Beliebte Rezepte</h2>
+          </div>
+          <a class="btn btn--ghost" href="rezepte.html">Alle ansehen →</a>
+        </div>
+        <div class="grid grid--3" id="featuredGrid"></div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section--tight">
+      <div class="wrap">
+        <div class="band reveal">
+          <p class="eyebrow" style="color:var(--c-turmeric)">Mitmachen</p>
+          <h2>Ein Rezept = eine Markdown-Datei</h2>
+          <p style="max-width:60ch">Kaki Lima ist Open Source. Jedes Rezept ist eine einfache <code>.md</code>-Datei im Ordner <code>/recipes</code>. Push sie ins Repository — die Seite baut den Rest automatisch.</p>
+          <div class="steps">
+            <div class="step">
+              <div class="num">01</div>
+              <h3>Datei anlegen</h3>
+              <p>Erstelle <code>recipes/mein-rezept.md</code> mit Titel, Zutaten und Zubereitung.</p>
+            </div>
+            <div class="step">
+              <div class="num">02</div>
+              <h3>Pushen</h3>
+              <p>Beim Push erzeugt eine GitHub-Action automatisch den Rezept-Index.</p>
+            </div>
+            <div class="step">
+              <div class="num">03</div>
+              <h3>Fertig</h3>
+              <p>Dein Rezept erscheint sofort in der Übersicht — formatiert und durchsuchbar.</p>
+            </div>
+          </div>
+          <div style="margin-top:2rem"><a class="btn btn--gold" href="leitfaden.html">Zum Leitfaden</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story strip -->
+    <section class="section--tight">
+      <div class="wrap hero-grid" style="align-items:center">
+        <div class="reveal">
+          <p class="eyebrow">Kaki Lima?</p>
+          <h2>„Fünf Beine" — die Seele der Straße</h2>
+          <p class="lead" style="margin-block:1rem 1.4rem">„Kaki Lima" sind die fahrbaren Garküchen Indonesiens: zwei Räder, drei Beine des Stands — fünf Beine zusammen. An ihnen brutzelt das ehrlichste Essen des Landes.</p>
+          <p>Wir bringen diese Küche zu dir: ohne Schnickschnack, mit echten Gewürzen und Rezepten, die wirklich funktionieren.</p>
+          <p style="margin-top:1.4rem"><a class="btn btn--ghost" href="ueber-uns.html">Unsere Geschichte</a></p>
+        </div>
+        <div class="reveal">
+          <div class="card" style="padding:2rem">
+            <blockquote style="font-family:var(--f-display);font-size:1.5rem;line-height:1.4;color:var(--c-ink)">„Gutes Essen muss nicht kompliziert sein — es muss nur echt sein."</blockquote>
+            <p style="margin-top:1rem;color:var(--c-muted)">— Das Kaki-Lima-Prinzip</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer-slot"></div>
+
+  <script src="js/markdown.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/recipes-data.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
