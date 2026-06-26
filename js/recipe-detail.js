@@ -226,6 +226,7 @@
         ${d.description ? `<p class="lead">${escapeHtml(d.description)}</p>` : ""}
         ${tags}
         <div class="recipe-actions no-print">
+          <button class="btn btn--ghost" id="btnCook" type="button" aria-pressed="false">${ICONS.fire}<span>Kochmodus</span></button>
           <button class="btn btn--ghost" id="btnShare" type="button">${ICONS.share}<span>Teilen</span></button>
           <button class="btn btn--ghost" id="btnPdf" type="button">${ICONS.pdf}<span>Als PDF</span></button>
         </div>
@@ -248,7 +249,87 @@
 
     root.querySelector("#btnShare").addEventListener("click", () => share(d));
     root.querySelector("#btnPdf").addEventListener("click", () => window.print());
+    root.querySelector("#btnCook").addEventListener("click", toggleCookMode);
     initPortions(root, Number(d.servings) || 0);
+    initSteps(root, slug);
+    renderRelated(d);
+  }
+
+  /* ---------- checkable steps ---------- */
+  function initSteps(scope, slugKey) {
+    const md = scope.querySelector(".recipe-grid > .md");
+    if (!md) return;
+    const steps = md.querySelectorAll("ol > li");
+    if (!steps.length) return;
+    const key = "kl-steps:" + slugKey;
+    let done = {};
+    try { done = JSON.parse(localStorage.getItem(key) || "{}"); } catch (_) {}
+    steps.forEach((li, i) => {
+      li.classList.add("step");
+      li.setAttribute("role", "button");
+      li.setAttribute("tabindex", "0");
+      const set = on => {
+        li.classList.toggle("is-done", on);
+        li.setAttribute("aria-pressed", on ? "true" : "false");
+        if (on) done[i] = 1; else delete done[i];
+        try { localStorage.setItem(key, JSON.stringify(done)); } catch (_) {}
+      };
+      set(!!done[i]);
+      li.addEventListener("click", () => set(!li.classList.contains("is-done")));
+      li.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(!li.classList.contains("is-done")); }
+      });
+    });
+  }
+
+  /* ---------- cooking mode (keeps the screen awake) ---------- */
+  let wakeLock = null;
+  async function acquireWake() {
+    try { if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen"); } catch (_) {}
+  }
+  function releaseWake() {
+    try { if (wakeLock) wakeLock.release(); } catch (_) {}
+    wakeLock = null;
+  }
+  async function toggleCookMode() {
+    const btn = root.querySelector("#btnCook");
+    const on = document.body.classList.toggle("cook-mode");
+    btn.classList.toggle("is-active", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    if (on) { toast("Kochmodus an – Display bleibt wach"); await acquireWake(); }
+    else { toast("Kochmodus aus"); releaseWake(); }
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && document.body.classList.contains("cook-mode") && !wakeLock) acquireWake();
+  });
+
+  /* ---------- related recipes ---------- */
+  async function renderRelated(d) {
+    let all = [];
+    try { all = await loadIndex(); } catch (_) { return; }
+    const me = (slug || "").toLowerCase();
+    const myTags = new Set((Array.isArray(d.tags) ? d.tags : []).map(t => String(t).toLowerCase()));
+    const scored = all
+      .filter(r => (r.slug || "").toLowerCase() !== me)
+      .map(r => {
+        let score = 0;
+        if (d.category && r.category === d.category) score += 2;
+        (Array.isArray(r.tags) ? r.tags : []).forEach(t => { if (myTags.has(String(t).toLowerCase())) score += 1; });
+        return { r, score };
+      })
+      .sort((a, b) => b.score - a.score || String(b.r.date || "").localeCompare(String(a.r.date || "")));
+
+    let picks = scored.filter(s => s.score > 0).map(s => s.r);
+    if (picks.length < 3) picks = picks.concat(scored.filter(s => s.score === 0).map(s => s.r));
+    picks = picks.slice(0, 3);
+    if (!picks.length) return;
+
+    const sec = document.createElement("section");
+    sec.className = "related no-print";
+    sec.innerHTML = `<h2>Das könnte dir auch schmecken</h2>
+      <div class="grid">${picks.map(recipeCard).join("")}</div>`;
+    const foot = root.querySelector(".recipe-foot");
+    if (foot) foot.parentNode.insertBefore(sec, foot); else root.querySelector(".recipe").appendChild(sec);
   }
 
   async function init() {
