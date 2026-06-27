@@ -357,6 +357,8 @@ body.cook-open { overflow: hidden; }
 .callout { background: var(--cream); border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: 0 var(--radius) var(--radius) 0; padding: .9rem 1.1rem; margin: 1.2rem 0; }
 
 /* ---------- Recipe generator ---------- */
+.gen-upload { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+.gen-upload label { cursor: pointer; }
 .gen-form fieldset { border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.2rem 1.3rem 1.4rem; margin-bottom: 1.4rem; background: var(--paper); }
 .gen-form legend { font-family: var(--f-serif); font-weight: 700; color: var(--brown-dk); padding: 0 .5rem; font-size: 1.1rem; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 1.1rem; }

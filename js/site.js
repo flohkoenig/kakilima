@@ -3,9 +3,8 @@
    ========================================================================= */
 
 const NAV = [
-  { href: "index.html",     label: "Startseite" },
-  { href: "rezepte.html",   label: "Rezepte" },
-  { href: "generator.html", label: "Rezept anlegen" },
+  { href: "index.html",   label: "Startseite" },
+  { href: "rezepte.html", label: "Rezepte" },
 ];
 
 function brandMark() {
