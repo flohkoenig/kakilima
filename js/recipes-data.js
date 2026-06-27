@@ -98,6 +98,10 @@ function thumbMedia(img, alt) {
     : ph;
 }
 
+function spinnerHTML(label) {
+  return `<div class="loading"><div class="spinner" role="status" aria-label="Lädt"></div><p>${escapeHtml(label || "Lädt …")}</p></div>`;
+}
+
 function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

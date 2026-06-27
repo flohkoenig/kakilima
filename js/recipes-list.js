@@ -78,8 +78,8 @@
   }
 
   async function init() {
-    container.className = "grid";
-    container.innerHTML = Array.from({ length: 6 }).map(() => `<div class="skeleton"></div>`).join("");
+    container.className = "";
+    container.innerHTML = spinnerHTML("Rezepte werden geladen …");
     try {
       all = await loadIndex();
       all.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));

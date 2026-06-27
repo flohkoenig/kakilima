@@ -189,6 +189,13 @@ p { color: var(--brown); }
 .state h3 { color: var(--brown-dk); margin-bottom: .4rem; }
 .skeleton { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); aspect-ratio: 3/2; opacity: .6; }
 
+/* ---------- Loading spinner ---------- */
+.loading { display: grid; place-items: center; gap: .9rem; padding: clamp(2.5rem, 8vw, 4.5rem) 1rem; color: var(--brown-soft); text-align: center; }
+.loading p { font-size: .92rem; color: var(--brown-soft); }
+.spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--cream-2); border-top-color: var(--teal); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.8s; } }
+
 /* ---------- Single recipe ---------- */
 .recipe.section { padding-top: clamp(1.1rem, 2.6vw, 1.7rem); }
 .crumbs { font-size: .86rem; color: var(--brown-soft); margin-bottom: 1rem; }
