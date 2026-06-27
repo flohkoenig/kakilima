@@ -8,7 +8,8 @@ const NAV = [
 ];
 
 function brandMark() {
-  return `<img class="brand-logo" src="assets/img/logo.png" width="42" height="42" alt="" aria-hidden="true">`;
+  // dunkelbraune Logo-Variante (aus der Alpha-Form generiert)
+  return `<img class="brand-logo" src="assets/img/logo-brown.png" width="42" height="42" alt="" aria-hidden="true">`;
 }
 
 function buildHeader() {
