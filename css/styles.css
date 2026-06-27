@@ -227,7 +227,11 @@ p { color: var(--brown); }
 
 .recipe-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
 .recipe-actions .btn { padding: .55rem 1.1rem; font-size: .9rem; }
-.recipe-actions .btn svg { width: 17px; height: 17px; }
+.recipe-actions .btn svg { width: 17px; height: 17px; color: var(--teal); }
+/* gleiches Akzentschema wie der Rest: dezente Linie + Teal-Icon, Hover in Teal */
+.recipe-actions .btn--ghost { border-color: var(--line); color: var(--brown-dk); background: var(--paper); }
+.recipe-actions .btn--ghost:hover { background: var(--cream-2); border-color: var(--teal); color: var(--brown-dk); }
+.recipe-actions .btn--ghost:hover svg { color: var(--teal); }
 .ingredients { background: var(--cream); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.3rem; position: sticky; top: 80px; }
 .ing-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem .9rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
 .ing-head h2 { font-size: 1.3rem; margin: 0; }
@@ -263,7 +267,7 @@ p { color: var(--brown); }
 .md table { width: 100%; border-collapse: collapse; margin-bottom: 1.1rem; }
 .md th, .md td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); }
 .md th { font-family: var(--f-serif); }
-.md ol { list-style: none; }   /* numbering comes from the counter badge only */
+.md ol { list-style: none; padding-left: 0; }   /* numbering comes from the counter badge only; kill the browser's default indent */
 .recipe-foot { margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: .8rem 2rem; flex-wrap: wrap; }
 
 /* steps: read-only "done" marker (abhaken happens in cooking mode) */
