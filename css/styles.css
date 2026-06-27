@@ -5,7 +5,7 @@
 
 :root {
   --paper:    #ffffff;
-  --cream:    #fbf4e4;
+  --cream:    #ffdd9e;
   --cream-2:  #f4e9d2;
   --amber:    #e0a12e;
   --amber-dk: #c2871d;
@@ -36,6 +36,34 @@ body {
   line-height: 1.6;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Batik-Kachel als Seitenhintergrund – leicht weichgezeichnet und
+   transparent, sodass das Muster erkennbar, aber dezent bleibt */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("../assets/web/batik.jpeg") repeat;
+  background-size: 340px auto;
+  filter: blur(3px);
+  opacity: .35;
+  /* Blur-Ränder über den Viewport hinausziehen, damit keine Kanten entstehen */
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+/* ---------- Inhalts-"Box": liegt über dem Batik-Muster,
+   nimmt den bisherigen Hintergrund-Farbton (--cream) an ---------- */
+main {
+  width: min(calc(var(--maxw) + 3rem), calc(100% - clamp(1.2rem, 5vw, 3rem)));
+  margin-inline: auto;
+  margin-block: clamp(1rem, 3vw, 2.5rem);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 50px -24px rgba(54, 39, 15, .55);
 }
 img, svg { display: block; max-width: 100%; }
 a { color: var(--teal); text-decoration: none; }
@@ -394,6 +422,8 @@ body.cook-open { overflow: hidden; }
 @media print {
   :root { --cream: #fff; --cream-2: #fff; }
   body { background: #fff; color: #1a1a1a; font-size: 12pt; }
+  body::before { display: none; }
+  main { background: #fff; border: 0; box-shadow: none; margin: 0; width: auto; }
   .site-header, .site-footer, .no-print, .carousel-btn, .recipe-photo .ph, .toast { display: none !important; }
   .section { padding: 0 !important; }
   .wrap { max-width: none; padding: 0; }
