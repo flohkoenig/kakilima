@@ -6,6 +6,7 @@
   if (!root) return;
 
   async function init() {
+    root.innerHTML = spinnerHTML("Rezepte werden geladen …");
     let all = [];
     try { all = await loadIndex(); } catch { /* leer */ }
 

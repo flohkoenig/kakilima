@@ -249,40 +249,36 @@
 
     root.querySelector("#btnShare").addEventListener("click", () => share(d));
     root.querySelector("#btnPdf").addEventListener("click", () => window.print());
-    root.querySelector("#btnCook").addEventListener("click", toggleCookMode);
+    root.querySelector("#btnCook").addEventListener("click", () => openCook(d, slug));
     initPortions(root, Number(d.servings) || 0);
-    initSteps(root, slug);
+    paintSteps(root, slug);
     renderRelated(d);
   }
 
-  /* ---------- checkable steps ---------- */
-  function initSteps(scope, slugKey) {
+  /* ---------- steps: read-only progress on the page ----------
+     Abhaken selbst passiert nur im Kochmodus; hier wird nur der
+     gespeicherte Fortschritt angezeigt. */
+  function zubList(scope) {
     const md = scope.querySelector(".recipe-grid > .md");
-    if (!md) return;
-    const steps = md.querySelectorAll("ol > li");
-    if (!steps.length) return;
-    const key = "kl-steps:" + slugKey;
-    let done = {};
-    try { done = JSON.parse(localStorage.getItem(key) || "{}"); } catch (_) {}
-    steps.forEach((li, i) => {
+    return md ? md.querySelector("ol") : null;
+  }
+  function loadDone(slugKey) {
+    try { return JSON.parse(localStorage.getItem("kl-steps:" + slugKey) || "{}"); } catch (_) { return {}; }
+  }
+  function saveDone(slugKey, done) {
+    try { localStorage.setItem("kl-steps:" + slugKey, JSON.stringify(done)); } catch (_) {}
+  }
+  function paintSteps(scope, slugKey) {
+    const ol = zubList(scope);
+    if (!ol) return;
+    const done = loadDone(slugKey);
+    [...ol.children].forEach((li, i) => {
       li.classList.add("step");
-      li.setAttribute("role", "button");
-      li.setAttribute("tabindex", "0");
-      const set = on => {
-        li.classList.toggle("is-done", on);
-        li.setAttribute("aria-pressed", on ? "true" : "false");
-        if (on) done[i] = 1; else delete done[i];
-        try { localStorage.setItem(key, JSON.stringify(done)); } catch (_) {}
-      };
-      set(!!done[i]);
-      li.addEventListener("click", () => set(!li.classList.contains("is-done")));
-      li.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(!li.classList.contains("is-done")); }
-      });
+      li.classList.toggle("is-done", !!done[i]);
     });
   }
 
-  /* ---------- cooking mode (keeps the screen awake) ---------- */
+  /* ---------- cooking mode: full-screen, step by step ---------- */
   let wakeLock = null;
   async function acquireWake() {
     try { if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen"); } catch (_) {}
@@ -291,17 +287,83 @@
     try { if (wakeLock) wakeLock.release(); } catch (_) {}
     wakeLock = null;
   }
-  async function toggleCookMode() {
-    const btn = root.querySelector("#btnCook");
-    const on = document.body.classList.toggle("cook-mode");
-    btn.classList.toggle("is-active", on);
-    btn.setAttribute("aria-pressed", on ? "true" : "false");
-    if (on) { toast("Kochmodus an – Display bleibt wach"); await acquireWake(); }
-    else { toast("Kochmodus aus"); releaseWake(); }
-  }
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && document.body.classList.contains("cook-mode") && !wakeLock) acquireWake();
+    if (document.visibilityState === "visible" && document.body.classList.contains("cook-open") && !wakeLock) acquireWake();
   });
+
+  function openCook(d, slugKey) {
+    const ol = zubList(root);
+    const steps = ol ? [...ol.children].map(li => li.textContent.trim()).filter(Boolean) : [];
+    if (!steps.length) { toast("Keine Zubereitungsschritte vorhanden"); return; }
+
+    const done = loadDone(slugKey);
+    const n = steps.length;
+    let idx = steps.findIndex((_, i) => !done[i]);
+    if (idx < 0) idx = n;                     // all done → start on finish screen
+
+    const ov = document.createElement("div");
+    ov.className = "cook-overlay";
+    ov.innerHTML = `
+      <div class="cook-inner">
+        <div class="cook-bar">
+          <span class="cook-title">${escapeHtml(d.title)}</span>
+          <button class="cook-close" type="button" aria-label="Kochmodus schließen">${ICONS.close}</button>
+        </div>
+        <div class="cook-progress"><span></span></div>
+        <div class="cook-stage"></div>
+        <div class="cook-nav">
+          <button class="btn btn--ghost cook-prev" type="button">Zurück</button>
+          <button class="btn btn--primary cook-next" type="button"></button>
+        </div>
+      </div>`;
+    document.body.appendChild(ov);
+    document.body.classList.add("cook-open");
+    acquireWake();
+
+    const stage = ov.querySelector(".cook-stage");
+    const bar = ov.querySelector(".cook-progress span");
+    const prevB = ov.querySelector(".cook-prev");
+    const nextB = ov.querySelector(".cook-next");
+
+    function paint() {
+      const doneCount = steps.reduce((a, _, i) => a + (done[i] ? 1 : 0), 0);
+      bar.style.width = Math.round((doneCount / n) * 100) + "%";
+      if (idx >= n) {
+        stage.innerHTML = `<div class="cook-finish">${ICONS.check}<h2>Fertig!</h2><p class="muted">Guten Appetit 🍽️</p></div>`;
+        prevB.disabled = false;
+        nextB.textContent = "Schließen";
+        return;
+      }
+      stage.innerHTML =
+        `<div class="cook-meta">Schritt <b>${idx + 1}</b> / ${n}${done[idx] ? ' · <span class="cook-checked">abgehakt ✓</span>' : ""}</div>
+         <p class="cook-text">${escapeHtml(steps[idx])}</p>`;
+      prevB.disabled = idx === 0;
+      nextB.textContent = done[idx] ? "Weiter" : "Abhaken & weiter";
+    }
+    function close() {
+      releaseWake();
+      document.body.classList.remove("cook-open");
+      document.removeEventListener("keydown", onKey);
+      ov.remove();
+      paintSteps(root, slugKey);            // reflect progress on the page
+    }
+    function onKey(e) {
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowRight" || e.key === "Enter") nextB.click();
+      else if (e.key === "ArrowLeft") prevB.click();
+    }
+
+    nextB.addEventListener("click", () => {
+      if (idx >= n) return close();
+      done[idx] = 1; saveDone(slugKey, done);
+      idx++;
+      paint();
+    });
+    prevB.addEventListener("click", () => { if (idx > 0) { idx--; paint(); } });
+    ov.querySelector(".cook-close").addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    paint();
+  }
 
   /* ---------- related recipes ---------- */
   async function renderRelated(d) {

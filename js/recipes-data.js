@@ -59,11 +59,16 @@ function totalTime(d) {
 }
 function recipeImage(d) { return d.image || d.bild || ""; }
 
-/* recipes without an own photo fall back to a deterministic placeholder
-   from the Lorem Picsum API (stable per recipe via the slug seed). */
+/* recipes without an own photo fall back to a deterministic food photo
+   (LoremFlickr, food-tagged). The lock keeps the image stable per recipe. */
+function placeholderLock(seed) {
+  const s = "kakilima-" + String(seed || "rezept").toLowerCase();
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h) % 100000;
+}
 function placeholderPhoto(seed, w, h) {
-  const s = encodeURIComponent("kakilima-" + String(seed || "rezept").toLowerCase().replace(/\s+/g, "-"));
-  return `https://picsum.photos/seed/${s}/${w}/${h}`;
+  return `https://loremflickr.com/${w}/${h}/food?lock=${placeholderLock(seed)}`;
 }
 function displayImage(d, w, h) {
   return recipeImage(d) || placeholderPhoto(d.slug || d.title, w || 800, h || 600);
@@ -82,6 +87,7 @@ const ICONS = {
   share: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>`,
   pdf:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>`,
   check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+  close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
 };
 /* placeholder sits behind the image; on load error the <img> just removes
    itself (no HTML inside the onerror attribute → no escaping pitfalls). */
@@ -90,6 +96,10 @@ function thumbMedia(img, alt) {
   return img
     ? `${ph}<img src="${escapeHtml(img)}" alt="${escapeHtml(alt)}" loading="lazy" onerror="this.remove()">`
     : ph;
+}
+
+function spinnerHTML(label) {
+  return `<div class="loading"><div class="spinner" role="status" aria-label="Lädt"></div><p>${escapeHtml(label || "Lädt …")}</p></div>`;
 }
 
 function escapeHtml(s) {

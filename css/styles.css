@@ -189,6 +189,13 @@ p { color: var(--brown); }
 .state h3 { color: var(--brown-dk); margin-bottom: .4rem; }
 .skeleton { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); aspect-ratio: 3/2; opacity: .6; }
 
+/* ---------- Loading spinner ---------- */
+.loading { display: grid; place-items: center; gap: .9rem; padding: clamp(2.5rem, 8vw, 4.5rem) 1rem; color: var(--brown-soft); text-align: center; }
+.loading p { font-size: .92rem; color: var(--brown-soft); }
+.spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--cream-2); border-top-color: var(--teal); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.8s; } }
+
 /* ---------- Single recipe ---------- */
 .recipe.section { padding-top: clamp(1.1rem, 2.6vw, 1.7rem); }
 .crumbs { font-size: .86rem; color: var(--brown-soft); margin-bottom: 1rem; }
@@ -201,9 +208,11 @@ p { color: var(--brown); }
 .recipe-photo img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
 .recipe-photo .ph { position: absolute; inset: 0; display: grid; place-items: center; }
 .recipe-photo .ph svg { width: 80px; opacity: .45; color: var(--brown-soft); }
-.facts { display: flex; flex-wrap: wrap; gap: 1.1rem 2.4rem; padding: 1.1rem 1.5rem; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 2rem; }
-.fact { display: flex; align-items: center; gap: .6rem; }
+.facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.1rem 1rem; padding: 1.1rem 1.3rem; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 2rem; }
+.fact { display: flex; align-items: center; gap: .6rem; min-width: 0; }
 .fact svg { width: 23px; height: 23px; color: var(--teal); flex: 0 0 auto; }
+.fact > span { min-width: 0; }
+.fact b, .fact small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fact b { display: block; font-size: 1rem; line-height: 1.15; color: var(--brown-dk); font-family: var(--f-serif); }
 .fact small { display: block; color: var(--brown-soft); font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; margin-top: 1px; }
 .recipe-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem; }
@@ -250,26 +259,42 @@ p { color: var(--brown); }
 .md table { width: 100%; border-collapse: collapse; margin-bottom: 1.1rem; }
 .md th, .md td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); }
 .md th { font-family: var(--f-serif); }
-.recipe-foot { margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.md ol { list-style: none; }   /* numbering comes from the counter badge only */
+.recipe-foot { margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: .8rem 2rem; flex-wrap: wrap; }
 
-/* ---------- checkable steps ---------- */
-.md ol li.step { cursor: pointer; transition: color .15s; }
-.md ol li.step:hover { color: var(--brown-dk); }
-.md ol li.step:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+/* steps: read-only "done" marker (abhaken happens in cooking mode) */
 .md ol li.is-done { color: var(--brown-soft); text-decoration: line-through; text-decoration-color: var(--line); }
 .md ol li.is-done::before { content: "✓"; background: var(--teal); }
-
-/* ---------- cooking mode ---------- */
-#btnCook.is-active { background: var(--brown); color: var(--cream); border-color: var(--brown); }
-#btnCook.is-active svg { color: var(--gold, var(--amber)); }
-body.cook-mode .recipe-grid > .md ol li { font-size: 1.16rem; margin-bottom: 1rem; }
-body.cook-mode .recipe-grid > .md ol li::before { top: .1rem; }
-body.cook-mode .ingredients { font-size: 1.05rem; }
-body.cook-mode .ingredients .qty { font-size: 1.1rem; }
 
 /* ---------- related recipes ---------- */
 .related { margin-top: 2.6rem; }
 .related h2 { font-size: 1.5rem; margin-bottom: 1.1rem; }
+
+/* ---------- cooking mode (full-screen, step by step) ---------- */
+body.cook-open { overflow: hidden; }
+.cook-overlay { position: fixed; inset: 0; z-index: 200; background: var(--cream); display: flex; animation: cook-in .2s ease; }
+@keyframes cook-in { from { opacity: 0; } to { opacity: 1; } }
+.cook-inner { margin: auto; width: 100%; max-width: 760px; height: 100%; display: flex; flex-direction: column; padding: clamp(1.1rem, 4vw, 2rem); }
+.cook-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.cook-title { font-family: var(--f-serif); font-weight: 700; font-size: 1.2rem; color: var(--brown-dk); }
+.cook-close { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--brown-dk); display: grid; place-items: center; flex: 0 0 auto; }
+.cook-close:hover { background: var(--cream-2); }
+.cook-close svg { width: 20px; height: 20px; }
+.cook-progress { height: 7px; background: var(--cream-2); border-radius: 999px; margin-top: 1.1rem; overflow: hidden; }
+.cook-progress span { display: block; height: 100%; width: 0; background: var(--teal); border-radius: 999px; transition: width .3s ease; }
+.cook-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; padding: 1.5rem 0; }
+.cook-meta { font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; color: var(--brown-soft); margin-bottom: 1rem; }
+.cook-meta b { color: var(--teal); font-size: 1.15rem; }
+.cook-checked { color: var(--teal); }
+.cook-text { font-family: var(--f-serif); font-size: clamp(1.45rem, 4.5vw, 2.1rem); line-height: 1.4; color: var(--brown-dk); }
+.cook-finish { text-align: center; }
+.cook-finish svg { width: 64px; height: 64px; color: var(--teal); margin: 0 auto 1rem; }
+.cook-finish h2 { font-size: 2rem; }
+.cook-nav { display: flex; gap: .8rem; }
+.cook-nav .btn { padding: .95rem 1.2rem; font-size: 1rem; }
+.cook-nav .cook-next { flex: 1; justify-content: center; }
+.cook-nav .cook-prev { min-width: 130px; justify-content: center; }
+@media (max-width: 520px) { .cook-nav .cook-prev { min-width: 96px; } }
 
 /* ---------- Prose (leitfaden / impressum) ---------- */
 .prose h2 { margin: 1.8rem 0 .7rem; }
