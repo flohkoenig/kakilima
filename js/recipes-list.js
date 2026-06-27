@@ -80,12 +80,16 @@
   async function init() {
     container.className = "";
     container.innerHTML = spinnerHTML("Rezepte werden geladen …");
+    const t0 = Date.now();
     try {
       all = await loadIndex();
       all.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+      await minWait(t0, 500);
       buildChips();
       buildViewToggle();
       render();
+      container.classList.add("fade-in");
+      setTimeout(() => container.classList.remove("fade-in"), 600);
     } catch (err) {
       container.className = "";
       container.innerHTML = `<div class="state"><h3>Rezepte konnten nicht geladen werden</h3>

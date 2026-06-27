@@ -9,6 +9,7 @@
   if (!form || !out) return;
 
   const $ = id => document.getElementById(id);
+  const relSel = new Set();   // chosen related-recipe slugs
 
   /* slugify: lowercase, umlauts spelled out, only a–z 0–9 and dashes */
   function slugify(s) {
@@ -54,6 +55,8 @@
     if (cuisine) push("cuisine", yamlValue(cuisine));
     const image = $("f-image").value.trim();
     if (image) push("image", yamlValue(image));
+    const gallery = splitLines($("f-gallery").value);
+    if (gallery.length) push("gallery", `[${gallery.join(", ")}]`);
     const prep = $("f-prep").value.trim();
     if (prep !== "") push("prep_time", Number(prep));
     const cook = $("f-cook").value.trim();
@@ -68,6 +71,7 @@
     if (author) push("author", yamlValue(author));
     const date = $("f-date").value.trim();
     if (date) push("date", date);
+    if (relSel.size) push("related", `[${[...relSel].join(", ")}]`);
     if ($("f-featured").checked) push("featured", "true");
 
     /* ---- body ---- */
@@ -122,8 +126,28 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
+  /* related-recipe picker: list already-published recipes as clickable text */
+  async function loadRelPicker() {
+    const host = $("relPicker");
+    if (!host || typeof loadIndex !== "function") return;
+    let all = [];
+    try { all = await loadIndex(); } catch (_) {}
+    if (!all.length) { host.innerHTML = `<span class="muted">Noch keine veröffentlichten Rezepte gefunden.</span>`; return; }
+    all.sort((a, b) => String(a.title).localeCompare(String(b.title)));
+    host.innerHTML = all.map(r =>
+      `<button type="button" class="rel-chip" data-slug="${escapeHtml(r.slug)}">${escapeHtml(r.title)}</button>`
+    ).join("");
+    host.querySelectorAll(".rel-chip").forEach(btn => btn.addEventListener("click", () => {
+      const s = btn.dataset.slug;
+      if (relSel.has(s)) relSel.delete(s); else relSel.add(s);
+      btn.classList.toggle("is-active", relSel.has(s));
+      build();
+    }));
+  }
+
   /* default date = today, then first build */
   const d = $("f-date");
   if (d && !d.value) d.value = new Date().toISOString().slice(0, 10);
   build();
+  loadRelPicker();
 })();
