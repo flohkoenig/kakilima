@@ -79,20 +79,28 @@
     const intro = $("f-intro").value.trim();
     if (intro) body.push(intro);
 
+    const isHeading = l => /^#{1,6}\s/.test(l);
+
     const ingredients = splitLines($("f-ingredients").value);
     if (ingredients.length) {
-      body.push("## Zutaten\n\n" + ingredients.map(l => `- ${l}`).join("\n"));
+      const md = ingredients.map(l => isHeading(l) ? `\n${l}\n` : `- ${l}`).join("\n").replace(/\n{3,}/g, "\n\n").trim();
+      body.push("## Zutaten\n\n" + md);
     }
 
     const steps = splitLines($("f-steps").value);
     if (steps.length) {
-      body.push("## Zubereitung\n\n" + steps.map((l, i) => `${i + 1}. ${l}`).join("\n"));
+      let i = 0;
+      const md = steps.map(l => isHeading(l) ? `\n${l}\n` : `${++i}. ${l}`).join("\n").replace(/\n{3,}/g, "\n\n").trim();
+      body.push("## Zubereitung\n\n" + md);
     }
 
     const tips = splitLines($("f-tips").value);
     if (tips.length) {
       body.push("## Tipps\n\n" + tips.map(l => `> ${l}`).join("\n>\n"));
     }
+
+    const extra = $("f-extra").value.trim();
+    if (extra) body.push(extra);
 
     const md = `---\n${fm.join("\n")}\n---\n\n${body.join("\n\n")}\n`;
     out.textContent = md;
@@ -143,7 +151,112 @@
       btn.classList.toggle("is-active", relSel.has(s));
       build();
     }));
+    syncRelChips();
   }
+  function syncRelChips() {
+    document.querySelectorAll("#relPicker .rel-chip").forEach(btn =>
+      btn.classList.toggle("is-active", relSel.has(btn.dataset.slug)));
+  }
+
+  /* ---- load an existing .md back into the form ---- */
+  function splitBodySections(body) {
+    const intro = [];
+    const sections = [];
+    let cur = null;
+    for (const line of body.split("\n")) {
+      const h = line.match(/^##\s+(.+?)\s*$/);          // level-2 headings only
+      if (h) { cur = { title: h[1], lines: [] }; sections.push(cur); }
+      else if (cur) cur.lines.push(line);
+      else intro.push(line);
+    }
+    return { intro: intro.join("\n").trim(), sections };
+  }
+
+  /* unwrap a markdown list back to one item per line (continuation lines that
+     don't start a new "- " / "1." item belong to the previous item) */
+  function unwrapList(content, marker) {
+    const items = [];
+    for (const raw of content.split("\n")) {
+      if (!raw.trim()) continue;
+      if (/^#{1,6}\s/.test(raw)) { items.push(raw.trim()); continue; }   // keep ### subheadings
+      const m = raw.match(marker);
+      if (m) items.push(m[1].trim());
+      else if (items.length) items[items.length - 1] += " " + raw.trim(); // wrapped line
+      else items.push(raw.trim());
+    }
+    return items.join("\n");
+  }
+  function unwrapQuote(content) {
+    const out = [];
+    let cur = "";
+    for (const raw of content.split("\n")) {
+      const s = raw.replace(/^\s*>\s?/, "");
+      if (!s.trim()) { if (cur) { out.push(cur); cur = ""; } continue; }  // blank / ">" = new tip
+      cur = cur ? cur + " " + s.trim() : s.trim();
+    }
+    if (cur) out.push(cur);
+    return out.join("\n");
+  }
+
+  function fillFromMarkdown(text) {
+    const { data, body } = parseFrontMatter(text);
+    const set = (id, v) => { const el = $(id); if (el) el.value = v ?? ""; };
+    set("f-title", data.title);
+    set("f-description", data.description);
+    set("f-category", data.category);
+    set("f-cuisine", data.cuisine);
+    set("f-image", data.image || data.bild);
+    set("f-prep", data.prep_time === "" || data.prep_time == null ? "" : data.prep_time);
+    set("f-cook", data.cook_time === "" || data.cook_time == null ? "" : data.cook_time);
+    set("f-servings", data.servings === "" || data.servings == null ? "" : data.servings);
+    set("f-difficulty", ["Einfach", "Mittel", "Anspruchsvoll"].includes(data.difficulty) ? data.difficulty : "");
+    set("f-tags", Array.isArray(data.tags) ? data.tags.join(", ") : (data.tags || ""));
+    set("f-author", data.author);
+    set("f-date", data.date ? String(data.date) : "");
+    set("f-gallery", Array.isArray(data.gallery) ? data.gallery.join("\n") : (data.gallery || ""));
+    $("f-featured").checked = data.featured === true;
+
+    relSel.clear();
+    (Array.isArray(data.related) ? data.related : (data.related ? [data.related] : []))
+      .forEach(s => relSel.add(String(s)));
+    syncRelChips();
+
+    const { intro, sections } = splitBodySections(body);
+    set("f-intro", intro);
+    let ing = "", steps = "", tips = ""; const extra = [];
+    for (const s of sections) {
+      const t = s.title.toLowerCase();
+      const content = s.lines.join("\n").replace(/^\n+|\n+$/g, "");
+      if (/^(zutaten|ingredients)\b/.test(t)) {
+        ing = unwrapList(content, /^\s*[-*•]\s+(.*)$/);
+      } else if (/^(zubereitung|anleitung|preparation|method)\b/.test(t)) {
+        steps = unwrapList(content, /^\s*\d+[.)]\s+(.*)$/);
+      } else if (/^(tipps?|tips?|hinweise?)\b/.test(t)) {
+        tips = unwrapQuote(content);
+      } else {
+        extra.push(`## ${s.title}\n\n${content}`.trim());
+      }
+    }
+    set("f-ingredients", ing);
+    set("f-steps", steps);
+    set("f-tips", tips);
+    set("f-extra", extra.join("\n\n"));
+    build();
+  }
+
+  $("f-upload").addEventListener("change", async e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      fillFromMarkdown(text);
+      $("uploadName").textContent = `„${file.name}" geladen`;
+      toast("Rezept geladen – jetzt bearbeiten");
+    } catch (_) {
+      toast("Datei konnte nicht gelesen werden");
+    }
+    e.target.value = "";   // allow re-uploading the same file
+  });
 
   /* default date = today, then first build */
   const d = $("f-date");

@@ -19,6 +19,12 @@
         <p class="muted">Fülle die Felder aus – unten entsteht automatisch die fertige Markdown-Datei. Anschließend kopieren oder herunterladen und in den Ordner <code>recipes/</code> legen. Details im <a href="leitfaden.html">Leitfaden</a>.</p>
       </header>
 
+      <div class="gen-upload">
+        <label class="btn btn--ghost" for="f-upload">Bestehende .md laden &amp; bearbeiten</label>
+        <input type="file" id="f-upload" accept=".md,.markdown,text/markdown,text/plain" hidden>
+        <span class="muted" id="uploadName"></span>
+      </div>
+
       <form id="genForm" class="gen-form" novalidate>
         <fieldset>
           <legend>Eckdaten</legend>
@@ -107,6 +113,10 @@
           <label class="field">
             <span>Weitere Bilder <small>(optional, ein Pfad/URL pro Zeile)</small></span>
             <textarea id="f-gallery" rows="3" placeholder="assets/img/rendang-topf.jpg&#10;assets/img/rendang-detail.jpg"></textarea>
+          </label>
+          <label class="field">
+            <span>Weitere Abschnitte <small>(optional, rohes Markdown – z. B. „## Dazu passt")</small></span>
+            <textarea id="f-extra" rows="3" placeholder="## Dazu passt&#10;&#10;- Dampfender Jasminreis"></textarea>
           </label>
         </fieldset>
 
