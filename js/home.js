@@ -7,8 +7,10 @@
 
   async function init() {
     root.innerHTML = spinnerHTML("Rezepte werden geladen …");
+    const t0 = Date.now();
     let all = [];
     try { all = await loadIndex(); } catch { /* leer */ }
+    await minWait(t0, 500);
 
     all.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 
@@ -29,6 +31,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
       </button>
       <div class="carousel-dots" id="carDots"></div>`;
+
+    root.classList.add("fade-in");
+    setTimeout(() => root.classList.remove("fade-in"), 600);
 
     const track = root.querySelector("#carTrack");
     const prev = root.querySelector(".prev");

@@ -75,8 +75,8 @@
               <span>Datum</span>
               <input type="date" id="f-date">
             </label>
-            <label class="field">
-              <span>Bildpfad <small>(optional)</small></span>
+            <label class="field span2">
+              <span>Hauptbild <small>(optional – Pfad oder URL)</small></span>
               <input type="text" id="f-image" placeholder="assets/img/nasi-goreng.jpg">
             </label>
             <label class="field checkbox span2">
@@ -104,6 +104,16 @@
             <span>Tipps <small>(optional, eine pro Zeile)</small></span>
             <textarea id="f-tips" rows="3" placeholder="Kalter Reis vom Vortag wird schön körnig."></textarea>
           </label>
+          <label class="field">
+            <span>Weitere Bilder <small>(optional, ein Pfad/URL pro Zeile)</small></span>
+            <textarea id="f-gallery" rows="3" placeholder="assets/img/rendang-topf.jpg&#10;assets/img/rendang-detail.jpg"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Verwandte Rezepte</legend>
+          <p class="muted" style="margin:0 0 .7rem;font-size:.88rem">Wähle bereits veröffentlichte Rezepte aus – sie erscheinen unter „Das könnte dir auch schmecken". Ohne Auswahl werden automatisch passende Rezepte vorgeschlagen.</p>
+          <div id="relPicker" class="rel-picker"><span class="muted">Rezepte werden geladen …</span></div>
         </fieldset>
       </form>
 
@@ -126,6 +136,7 @@
   <div id="site-footer-slot"></div>
 
   <script src="js/site.js"></script>
+  <script src="js/recipes-data.js"></script>
   <script src="js/generator.js"></script>
 </body>
 </html>

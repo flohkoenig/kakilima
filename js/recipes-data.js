@@ -102,6 +102,10 @@ function spinnerHTML(label) {
   return `<div class="loading"><div class="spinner" role="status" aria-label="Lädt"></div><p>${escapeHtml(label || "Lädt …")}</p></div>`;
 }
 
+/* small timing helpers so the spinner doesn't just "blitz" past */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function minWait(start, ms) { const e = Date.now() - start; if (e < ms) await sleep(ms - e); }
+
 function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

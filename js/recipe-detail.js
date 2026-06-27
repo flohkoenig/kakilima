@@ -216,8 +216,18 @@
          </aside>`
       : "";
 
+    const galleryImgs = Array.isArray(d.gallery) ? d.gallery.filter(Boolean) : [];
+    const galleryHtml = galleryImgs.length
+      ? `<section class="gallery no-print">
+           <h2>Bilder</h2>
+           <div class="gallery-grid">
+             ${galleryImgs.map(g => `<a href="${escapeHtml(g)}" target="_blank" rel="noopener"><img src="${escapeHtml(g)}" alt="${escapeHtml(d.title)}" loading="lazy" onerror="this.closest('a').remove()"></a>`).join("")}
+           </div>
+         </section>`
+      : "";
+
     root.innerHTML = `
-    <article class="wrap section recipe">
+    <article class="wrap section recipe fade-in">
       <nav class="crumbs no-print"><a href="index.html">Startseite</a> › <a href="rezepte.html">Rezepte</a> › ${escapeHtml(d.title)}</nav>
 
       <header class="recipe-head">
@@ -240,6 +250,8 @@
         ${ingredients}
         <div class="md">${parts.rest}</div>
       </div>
+
+      ${galleryHtml}
 
       <div class="recipe-foot no-print">
         <a class="btn btn--ghost" href="rezepte.html">← Alle Rezepte</a>
@@ -370,20 +382,32 @@
     let all = [];
     try { all = await loadIndex(); } catch (_) { return; }
     const me = (slug || "").toLowerCase();
-    const myTags = new Set((Array.isArray(d.tags) ? d.tags : []).map(t => String(t).toLowerCase()));
-    const scored = all
-      .filter(r => (r.slug || "").toLowerCase() !== me)
-      .map(r => {
-        let score = 0;
-        if (d.category && r.category === d.category) score += 2;
-        (Array.isArray(r.tags) ? r.tags : []).forEach(t => { if (myTags.has(String(t).toLowerCase())) score += 1; });
-        return { r, score };
-      })
-      .sort((a, b) => b.score - a.score || String(b.r.date || "").localeCompare(String(a.r.date || "")));
+    let picks;
 
-    let picks = scored.filter(s => s.score > 0).map(s => s.r);
-    if (picks.length < 3) picks = picks.concat(scored.filter(s => s.score === 0).map(s => s.r));
-    picks = picks.slice(0, 3);
+    if (Array.isArray(d.related) && d.related.length) {
+      // manual selection from the generator wins, in the chosen order
+      const bySlug = new Map(all.map(r => [String(r.slug).toLowerCase(), r]));
+      picks = d.related
+        .map(s => bySlug.get(String(s).toLowerCase()))
+        .filter(Boolean)
+        .filter(r => (r.slug || "").toLowerCase() !== me)
+        .slice(0, 6);
+    } else {
+      // otherwise score by shared category / tags
+      const myTags = new Set((Array.isArray(d.tags) ? d.tags : []).map(t => String(t).toLowerCase()));
+      const scored = all
+        .filter(r => (r.slug || "").toLowerCase() !== me)
+        .map(r => {
+          let score = 0;
+          if (d.category && r.category === d.category) score += 2;
+          (Array.isArray(r.tags) ? r.tags : []).forEach(t => { if (myTags.has(String(t).toLowerCase())) score += 1; });
+          return { r, score };
+        })
+        .sort((a, b) => b.score - a.score || String(b.r.date || "").localeCompare(String(a.r.date || "")));
+      picks = scored.filter(s => s.score > 0).map(s => s.r);
+      if (picks.length < 3) picks = picks.concat(scored.filter(s => s.score === 0).map(s => s.r));
+      picks = picks.slice(0, 3);
+    }
     if (!picks.length) return;
 
     const sec = document.createElement("section");
@@ -397,13 +421,19 @@
   async function init() {
     if (!slug) return fail("Es wurde kein Rezept angegeben.");
     if (!/^[a-z0-9._-]+$/i.test(slug)) return fail("Ungültiger Rezeptname.");
+    const t0 = Date.now();
     try {
       const res = await fetch(`${RECIPES_DIR}/${slug}.md`, { cache: "no-cache" });
       if (!res.ok) throw new Error(`Die Datei recipes/${slug}.md existiert nicht.`);
       const { data, body } = parseFrontMatter(await res.text());
       if (!data.title) data.title = slug.replace(/[-_]/g, " ");
+      // keep the spinner visible briefly, then fade it out before the recipe fades in
+      await minWait(t0, 650);
+      const sp = root.querySelector(".loading");
+      if (sp) { sp.classList.add("is-leaving"); await sleep(260); }
       render(data, body);
     } catch (err) {
+      await minWait(t0, 400);
       fail(err.message);
     }
   }

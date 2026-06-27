@@ -194,7 +194,11 @@ p { color: var(--brown); }
 .loading p { font-size: .92rem; color: var(--brown-soft); }
 .spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--cream-2); border-top-color: var(--teal); animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.8s; } }
+.loading.is-leaving { animation: kl-fadeout .28s ease forwards; }
+@keyframes kl-fadeout { to { opacity: 0; } }
+.fade-in { animation: kl-fadein .5s ease both; }
+@keyframes kl-fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.8s; } .fade-in, .loading.is-leaving { animation: none; } }
 
 /* ---------- Single recipe ---------- */
 .recipe.section { padding-top: clamp(1.1rem, 2.6vw, 1.7rem); }
@@ -223,7 +227,11 @@ p { color: var(--brown); }
 
 .recipe-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
 .recipe-actions .btn { padding: .55rem 1.1rem; font-size: .9rem; }
-.recipe-actions .btn svg { width: 17px; height: 17px; }
+.recipe-actions .btn svg { width: 17px; height: 17px; color: var(--teal); }
+/* gleiches Akzentschema wie der Rest: dezente Linie + Teal-Icon, Hover in Teal */
+.recipe-actions .btn--ghost { border-color: var(--line); color: var(--brown-dk); background: var(--paper); }
+.recipe-actions .btn--ghost:hover { background: var(--cream-2); border-color: var(--teal); color: var(--brown-dk); }
+.recipe-actions .btn--ghost:hover svg { color: var(--teal); }
 .ingredients { background: var(--cream); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.3rem; position: sticky; top: 80px; }
 .ing-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem .9rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
 .ing-head h2 { font-size: 1.3rem; margin: 0; }
@@ -259,7 +267,7 @@ p { color: var(--brown); }
 .md table { width: 100%; border-collapse: collapse; margin-bottom: 1.1rem; }
 .md th, .md td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--line); }
 .md th { font-family: var(--f-serif); }
-.md ol { list-style: none; }   /* numbering comes from the counter badge only */
+.md ol { list-style: none; padding-left: 0; }   /* numbering comes from the counter badge only; kill the browser's default indent */
 .recipe-foot { margin-top: 2.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: .8rem 2rem; flex-wrap: wrap; }
 
 /* steps: read-only "done" marker (abhaken happens in cooking mode) */
@@ -269,6 +277,14 @@ p { color: var(--brown); }
 /* ---------- related recipes ---------- */
 .related { margin-top: 2.6rem; }
 .related h2 { font-size: 1.5rem; margin-bottom: 1.1rem; }
+
+/* ---------- image gallery ---------- */
+.gallery { margin-top: 2.2rem; }
+.gallery h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .8rem; }
+.gallery-grid a { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--cream-2); }
+.gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
+.gallery-grid a:hover img { transform: scale(1.04); }
 
 /* ---------- cooking mode (full-screen, step by step) ---------- */
 body.cook-open { overflow: hidden; }
@@ -331,6 +347,11 @@ body.cook-open { overflow: hidden; }
 .field.checkbox { flex-direction: row; align-items: center; gap: .5rem; }
 .field.checkbox input { width: auto; }
 .field.checkbox span { font-weight: 500; }
+
+.rel-picker { display: flex; flex-wrap: wrap; gap: .5rem; }
+.rel-chip { border: 1px solid var(--line); background: var(--cream); color: var(--brown); padding: .4rem .85rem; border-radius: 999px; font-size: .88rem; transition: background .15s, border-color .15s, color .15s; }
+.rel-chip:hover { border-color: var(--amber-dk); }
+.rel-chip.is-active { background: var(--teal); color: #fff; border-color: var(--teal); }
 
 .gen-output { margin-top: .5rem; }
 .gen-output-head { display: flex; align-items: baseline; justify-content: space-between; gap: .8rem; flex-wrap: wrap; margin-bottom: .6rem; }
