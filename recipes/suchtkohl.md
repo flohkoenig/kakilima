@@ -12,6 +12,7 @@ author: Flo
 date: 2026-06-27
 related: [nasi-goreng]
 featured: true
+image: assets/img/suchtkohl.jpeg
 ---
 
 lecker Salat!
