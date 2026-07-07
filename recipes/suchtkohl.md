@@ -3,6 +3,7 @@ title: Suchtkohl
 description: japanischer Spitzkohlsalat
 category: Vorspeise
 cuisine: Japan
+image: assets/img/Suchtkohl.png
 prep_time: 15
 cook_time: 0
 servings: 2
