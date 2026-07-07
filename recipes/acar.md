@@ -3,7 +3,7 @@ title: Acar
 description: indonesische Pickles
 category: Beilage
 cuisine: Indo
-image: assets/img/acar.png
+image: assets/img/Acar.png
 prep_time: 5
 cook_time: 0
 servings: 2
